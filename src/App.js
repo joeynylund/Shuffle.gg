@@ -60,9 +60,7 @@ function App() {
       })
     } while(cursor !== undefined)
 
-    var addedTime = time.setMinutes(time.getMinutes() + 5)
-
-    let cachedTime = addedTime.getTime()
+    cachedTime = time.setMinutes(time.getMinutes() + 5)
 
     sessionStorage.removeItem('time')
 
