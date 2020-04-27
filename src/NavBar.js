@@ -28,7 +28,7 @@ const Example = (props) => {
           <Nav className="mr-auto" navbar>
             
           </Nav>
-          <NavbarText>Simple Text</NavbarText>
+          <NavbarText></NavbarText>
         </Collapse>
       </Navbar>
     </div>
