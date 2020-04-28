@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  background-image: url("./topography2.jpg");
+  background-size: contain;
 }
 
 .App-logo {
@@ -14,7 +16,7 @@
 }
 
 .App-header {
-  background-color: #121212;
+  background-color: transparent;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -22,7 +24,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-  margin-top: -56px;
+  margin-top: -74px;
 }
 
 .App-link {
@@ -30,11 +32,77 @@
 }
 
 .bg-dark {
-  background-color: #121212!important
+  background-color: transparent!important;
 }
 
 .navbar-brand {
   color: #22FF8A!important;
   font-weight: bold;;
   font-size: 2rem;
+}
+
+.animate {
+  opacity: 0;
+  animation-fill-mode: forwards!important;
+}
+
+.fade {
+  opacity: 0;
+  animation: fadeIn 0.75s;
+  animation-fill-mode: forwards;
+}
+
+.fade2 {
+  opacity: 0;
+  animation: fadeIn 0.75s 0.25s;
+  animation-fill-mode: forwards;
+}
+
+.fade3 {
+  opacity: 0;
+  animation: fadeIn 0.75s 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+  }
+
+@keyframes fadeIns {
+  0% {opacity:0;transform: translate(0px, -25px)}
+  100% {opacity:1;transform: translate(0px, 0px)}
+  }
+
+.title {
+  color: rgba(255,255,255,0.6)
+}
+
+.hover {
+  transition: transform 0.5s;
+  cursor: pointer;
+}
+
+.hover2 {
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.hover2:hover {
+  box-shadow: -1px 1px #22FF8A, -2px 2px #22FF8A, -3px 3px #22FF8A;
+}
+
+.hover:hover {
+  transform: scale(1.05);
+  transform: translate(3px, -3px);
+}
+
+a {
+  text-decoration: none;
+  color: #FFF;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #FFF;
 }
