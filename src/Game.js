@@ -136,33 +136,30 @@ function App({ match }) {
 
   function shuffle() {
 
-    /* console.clear()
-
-    cachedTime = sessionStorage.getItem('time')
-
-    if (currentTime > cachedTime) {
-      
-      console.log("Pulling Streams!")
-
-      sessionStorage.clear()
-
-      setChannel('')
-      
-      loadStreams()
-
-    } else {
-
-      console.log("Cached Streams!")
-      
-      loadFromCache()
-
-    } */
-
     window.location.reload()
 
   }
 
+  function handleResize() {
+    if (window.innerWidth < 1200 && window.innerWidth > 991) {
+      setHeight('332px')
+    } else if (window.innerWidth < 992 && window.innerWidth > 766) {
+      setHeight('199px')
+    } else if (window.innerWidth < 767) {
+      setHeight('599px')
+    }
+  }
+
+
   useEffect(() => {
+
+    if (window.innerWidth < 1200 && window.innerWidth > 991) {
+      setHeight('332px')
+    } else if (window.innerWidth < 992 && window.innerWidth > 766) {
+      setHeight('199px')
+    } else if (window.innerWidth < 767) {
+      setHeight('599px')
+    }
 
     cachedTime = sessionStorage.getItem('time')
 
@@ -187,6 +184,8 @@ function App({ match }) {
       loadFromCache()
 
     }
+
+    window.addEventListener('resize', handleResize);
   
   }, [height]);
 
@@ -196,11 +195,11 @@ function App({ match }) {
 
       <NavBar />
         
-        <header className="App-header">
+        <header className="App-header-game">
 
           <Container>
 
-              { channel === '' ? <h2 style={{textAlign:"left", fontFamily:"Poppins"}}>{streams.length}</h2> : 
+              { channel === '' ? <h2 style={{textAlign:"left", fontFamily:"Poppins"}}>Shuffling the deck of streams...</h2> : 
               <div>
 
               <Row>
@@ -210,24 +209,24 @@ function App({ match }) {
                 }}><FontAwesomeIcon icon={faAngleLeft} style={{color:"#22FF8A",cursor:'pointer'}} /></Link> {match.params.game}</h1>
 
               </Row> 
-              <Row style={{marginBottom:"15px"}}>
+              <Row style={{marginBottom:"10px"}}>
 
-                <Col md="1">
+                <Col xs="1" md="2" xl="1" className="logo-container">
                 
-                  <Fade2><img src={logo} className="fade2" style={{ borderRadius: '50%', width: '75px' }}/></Fade2>
+                  <Fade2><img src={logo} className="fade2 logo" style={{ borderRadius: '50%', width: '100%' }}/></Fade2>
               
                 </Col>
 
-                <Col md="9">
+                <Col xs="10" sm="10" md="9" xl="10" className="name-title-container">
 
-                <Fade2><h2 className="fade2" style={{textAlign:"left", fontFamily:"Poppins"}}>{channel}</h2></Fade2>
+                <Fade2><h2 className="fade2 streamer-name" style={{textAlign:"left", fontFamily:"Poppins"}}>{channel}</h2></Fade2>
                 <Fade3><h6 className="fade3 title" style={{textAlign:"left", fontFamily:"Poppins"}}>{title}</h6></Fade3>
 
                 </Col>
 
-                <Col md="2" style={{textAlign:"right"}}>
+                <Col xs="2" sm="2" md="1" xl="1" style={{textAlign:"right"}} className="shuffle-container">
 
-                <Fade3><FontAwesomeIcon icon={faRandom} className="fade3" style={{color:"#22FF8A",fontSize:"40px",marginTop:'25px',cursor:'pointer'}} onClick={shuffle}/></Fade3>
+                <Fade3><FontAwesomeIcon icon={faRandom} className="fade3 shuffle" style={{color:"#22FF8A",fontSize:"40px",cursor:'pointer'}} onClick={shuffle}/></Fade3>
 
                 </Col>
 

@@ -6,6 +6,7 @@ body {
   font-family: 'Poppins';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #121212!important;
 }
 
 code {
@@ -16,160 +17,10 @@ html,
 body {
   margin: 0;
 }
-.switcher-text {
-  margin-bottom: 10px;
-}
-
-body[data-theme="light"] .switcher-text::before {
-  content: 'Turn the lights on!';
-}
-
-body[data-theme="dark"] .switcher-text::before {
-  content: 'Turn the lights off!';
-}
-
-body[data-theme="light"] .bm-menu {
-  background: #424242!important
-}
-
-body[data-theme="light"] .bm-item {
-  background: #121212
-}
-
-body[data-theme="dark"] .bm-menu {
-  background: #cecece!important
-}
-
-body[data-theme="dark"] .bm-item {
-  background: #ffffff
-}
-
-body[data-theme="light"] .switcher {
-  background: #424242!important;
-  padding: 0px;
-}
-
-body[data-theme="dark"] .switcher {
-  background: #cecece!important;
-  padding: 0px;
-}
-
-body[data-theme="light"] .bm-burger-button {
-  background: #000000!important;
-  padding: 0px;
-}
-
-body[data-theme="dark"] .bm-burger-button {
-  background: #cecece!important;
-  padding: 0px;
-}
-
-@media only screen and (max-width: 600px) {
-  .bm-menu-wrap {
-      width: 100%!important;
-  }
-}
 
 #App {
   font-family: sans-serif;
 
   /* Give app full page to work with */
   height: 100vh;
-}
-
-.stream-button {
-  cursor: pointer!important;
-}
-
-#wrapper {
-  text-align: center;
-
-  /* Prevent sidebar from showing a scrollbar on page */
-  overflow: auto;
-}
-
-/* Individual item */
-.bm-item {
-  display: inline-block;
-  padding: 20px;
-  width: 100%!important;
-  border-radius: 10px;
-  margin: 20px 0px!important;
-
-  /* Our sidebar item styling */
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.bm-item:focus {
-  outline: 0;
-}
-
-/* The rest copied directly from react-burger-menu docs */
-
-/* Position and sizing of burger button */
-.bm-burger-button {
-  position: fixed;
-  width: 60px;
-  height: 50px;
-  right: 36px;
-  top: 22px;
-}
-
-/* Color/shape of burger icon bars */
-.bm-burger-bars:nth-child(1) {
-  background: #616161;
-  height: 10%!important;
-  top: 25%!important;
-  width: 60%!important;
-  margin: 0 auto!important;
-}
-
-.bm-burger-bars:nth-child(2) {
-  background: #616161;
-  height: 10%!important;
-  top: 45%!important;
-  width: 60%!important;
-  margin: 0 auto!important;
-}
-
-.bm-burger-bars:nth-child(3) {
-  background: #616161;
-  height: 10%!important;
-  top: 65%!important;
-  width: 60%!important;
-  margin: 0 auto!important;
-}
-
-/* Position and sizing of clickable cross button */
-.bm-cross-button {
-  height: 32px;
-  width: 32px;
-}
-
-/* Color/shape of close button cross */
-.bm-cross {
-  background: #a3a3a3;
-}
-
-/* General sidebar styles */
-.bm-menu {
-  background: #a3a3a3;
-  padding: 2.5em 1.5em 0;
-  font-size: 1.15em;
-  overflow: hidden!important;
-}
-
-/* Morph shape necessary with bubble or elastic */
-.bm-morph-shape {
-  fill: #373a47;
-}
-
-/* Styling of overlay */
-.bm-overlay {
-  background: rgba(0, 0, 0, 0.3);
-}
-
-.button-switcher {
-  margin-left: 0px!important;
 }

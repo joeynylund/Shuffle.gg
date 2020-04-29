@@ -27,6 +27,119 @@
   margin-top: -74px;
 }
 
+.App-header-game {
+  background-color: transparent;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  margin-top: -74px;
+}
+
+
+.streamer-name {
+  margin-bottom: 0rem;
+}
+
+@media only screen and (max-width: 1199px) {
+  .App-header {
+    background-color: transparent;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    margin-top: 0rem;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .logo-container {
+    padding-right: 0px;
+  }
+
+  .name-title-container {
+    margin-top: 10px;
+  }
+
+  .shuffle-container {
+    margin-top: 25px;
+  }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  .logo-container {
+    padding-right: 35px;
+  }
+
+  .name-title-container {
+    margin-top: 20px;
+    padding-left: 0px;
+  }
+
+  .shuffle-container {
+    margin-top: 45px;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .logo-container {
+    padding-right: 25px;
+  }
+
+  .name-title-container {
+    margin-top: 10px;
+    padding-left: 0px;
+  }
+
+  .shuffle-container {
+    margin-top: 25px;
+    padding-left: 0px
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  .logo-container {
+    display:none;
+  }
+
+  .name-title-container {
+    margin-top: 10px;
+  }
+
+  .title {
+    display: none;
+  }
+
+  .shuffle {
+    margin-top: 10px;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .logo-container {
+    display:none;
+  }
+
+  .name-title-container {
+    margin-top: 10px;
+  }
+
+  .title {
+    display: none;
+  }
+
+  .shuffle {
+    margin-top: 15px;
+    font-size: 30px!important;
+  }
+}
+
 .App-link {
   color: #61dafb;
 }
@@ -88,13 +201,8 @@
   cursor: pointer;
 }
 
-.hover2:hover {
-  box-shadow: -1px 1px #22FF8A, -2px 2px #22FF8A, -3px 3px #22FF8A;
-}
-
 .hover:hover {
   transform: scale(1.05);
-  transform: translate(3px, -3px);
 }
 
 a {

@@ -1,17 +1,7 @@
 import React, { useState } from 'react';
 import {
-  Collapse,
   Navbar,
-  NavbarToggler,
   NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText
 } from 'reactstrap';
 
 const Example = (props) => {
@@ -23,13 +13,6 @@ const Example = (props) => {
     <div>
       <Navbar color="dark" dark expand="md">
         <NavbarBrand href="/">Shuffle.</NavbarBrand>
-        <NavbarToggler onClick={toggle} />
-        <Collapse isOpen={isOpen} navbar>
-          <Nav className="mr-auto" navbar>
-            
-          </Nav>
-          <NavbarText></NavbarText>
-        </Collapse>
       </Navbar>
     </div>
   );

@@ -32,7 +32,7 @@ function App() {
       .then((data) => {
         let i = 0
         data.data.forEach(game => {
-          let newImagePath = game.box_art_url.replace('{width}', '171').replace('{height}', '228');
+          let newImagePath = game.box_art_url.replace('{width}', '271').replace('{height}', '328');
           let animation = 'fadeIns 0.5s' + ' ' + i + 's'
 
           let live = {
@@ -84,12 +84,12 @@ function App() {
               {console.log(games)}
               {games.map(game => (
                 
-                  <Col md="2" className="hover">
+                  <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover">
                     <Link to={{
                   pathname: "/" + game.name,
                 }}>
-                    <img src={game.image} style={{borderRadius: "15px", animation: game.css}} className="animate hover2" />
-                    <h6 style={{textAlign:"left", fontFamily:"Poppins", marginTop:"10px", marginBottom:"20px", animation: game.css}} className="animate">{game.name}</h6>
+                    <img src={game.image} style={{borderRadius: "15px", width:"100%", height:"calc(100% - 30px)", animation: game.css}} className="animate hover2" />
+                    <h6 style={{textAlign:"left", fontFamily:"Poppins", marginTop:"5px", marginBottom:"20px", animation: game.css}} className="animate">{game.name}</h6>
                     </Link>
                   </Col>
                 
