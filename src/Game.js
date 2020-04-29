@@ -195,7 +195,7 @@ function App({ match }) {
 
       <NavBar />
         
-        <header className="App-header-game">
+        <header className="App-header">
 
           <Container>
 
