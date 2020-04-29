@@ -65,8 +65,9 @@ function App() {
         <header className="App-header">
 
           <Container>
-             
-            <Row style={{justifyContent:"center"}}>
+
+            { games.length == 12 ? 
+            <div><Row style={{justifyContent:"center"}}>
 
               <h1 style={{fontWeight:"bold", fontFamily:"Poppins", color:"#22FF8A"}}>Welcome to Shuffle.</h1>
 
@@ -90,10 +91,11 @@ function App() {
                     <h6 style={{textAlign:"left", fontFamily:"Poppins", marginTop:"5px", marginBottom:"20px", animation: game.css}} className="animate">{game.name}</h6>
                     </Link>
                   </Col>
+                
 
               ))}
 
-            </Row>
+            </Row></div> : <div></div>}
 
           </Container>
 
