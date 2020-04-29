@@ -204,9 +204,9 @@ function App({ match }) {
 
               <Row>
 
-                <h1 style={{fontFamily:"Poppins", marginBottom:"30px"}}><Link to={{
+                <h2 style={{fontFamily:"Poppins", marginBottom:"10px"}}><Link to={{
                   pathname: "/",
-                }}><FontAwesomeIcon icon={faAngleLeft} style={{color:"#22FF8A",cursor:'pointer'}} /></Link> {match.params.game}</h1>
+                }}><FontAwesomeIcon icon={faAngleLeft} style={{color:"#22FF8A",cursor:'pointer'}} /></Link> {match.params.game}</h2>
 
               </Row> 
               <Row style={{marginBottom:"10px"}}>
