@@ -65,9 +65,8 @@ function App() {
         <header className="App-header">
 
           <Container>
-
-            { games.length == 12 ? 
-            <div><Row style={{justifyContent:"center"}}>
+             
+            <Row style={{justifyContent:"center"}}>
 
               <h1 style={{fontWeight:"bold", fontFamily:"Poppins", color:"#22FF8A"}}>Welcome to Shuffle.</h1>
 
@@ -81,7 +80,6 @@ function App() {
 
             <Row>
 
-              {console.log(games)}
               {games.map(game => (
                 
                   <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover">
@@ -92,11 +90,10 @@ function App() {
                     <h6 style={{textAlign:"left", fontFamily:"Poppins", marginTop:"5px", marginBottom:"20px", animation: game.css}} className="animate">{game.name}</h6>
                     </Link>
                   </Col>
-                
 
               ))}
 
-            </Row></div> : <div></div>}
+            </Row>
 
           </Container>
 
