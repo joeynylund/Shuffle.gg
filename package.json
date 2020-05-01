@@ -21,6 +21,7 @@
     "react-dom": "^16.13.1",
     "react-fontawesome": "^1.7.1",
     "react-ionicons-v5": "^1.2.0",
+    "react-loading-skeleton": "^2.0.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-twitch-embed-video": "^2.0.2",

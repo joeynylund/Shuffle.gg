@@ -4,10 +4,10 @@ import ReactTwitchEmbedVideo from "react-twitch-embed-video";
 import NavBar from './NavBar.js';
 import {Link} from 'react-router-dom';
 import { Container, Row, Col } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRandom, faAngleLeft } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRandom, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import styled, { keyframes } from 'styled-components';
-import { fadeInDown } from 'react-animations'
+import { fadeInDown } from 'react-animations';
 
 const Fade = styled.div`animation: 0.75s ${keyframes`${fadeInDown}`}`;
 
@@ -19,8 +19,6 @@ function App({ match }) {
 
   const [height, setHeight] = useState('433px');
   
-  const [liveStreams, setLiveStreams] = useState([]);
-
   const [channel, setChannel] = useState('')
 
   const [title, setTitle] = useState('')
@@ -79,7 +77,6 @@ function App({ match }) {
               title: stream.title, 
             }
             streams.push(live)
-            setLiveStreams(oldArray => [...oldArray, live])
           }
         })
         cursor = data.pagination.cursor
@@ -150,6 +147,18 @@ function App({ match }) {
     }
   }
 
+  function quote() {
+    const quotes = [
+      "Shuffling the deck...",
+      "Finding your match...",
+      "You're going to like this stream...we hope...",
+      "Keep swiping! Uhhh, we meant shuffling!",,
+    ]
+
+    var randomQuote = quotes[Math.floor(Math.random()*quotes.length)];
+
+    return randomQuote;
+  }
 
   useEffect(() => {
 
@@ -199,7 +208,8 @@ function App({ match }) {
 
           <Container>
 
-              { channel === '' ? <h2 style={{textAlign:"left", fontFamily:"Poppins"}}>Shuffling the deck of streams...</h2> : 
+              { 
+                channel === '' ? <h2 style={{textAlign:"left", fontFamily:"Poppins"}}>{quote()}</h2> : 
               <div>
 
               <Row>
@@ -232,7 +242,8 @@ function App({ match }) {
 
               </Row>
               
-              <Fade><div className="fade3"><ReactTwitchEmbedVideo theme="dark" width="100%" height={height} channel={channel} /></div></Fade> </div>}  
+              <Fade><div className="fade3"><ReactTwitchEmbedVideo theme="dark" width="100%" height={height} channel={channel} /></div></Fade> </div>
+            }  
 
           </Container>
 

@@ -6,9 +6,7 @@ import { Container, Row, Col } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRandom } from '@fortawesome/free-solid-svg-icons'
 
-function App() {
-
-  const [height, setHeight] = useState('433px');
+function App({location}) {
 
   const [games, setGames] = useState([]);
 
@@ -46,7 +44,35 @@ function App() {
         })
       })
 
-      sessionStorage.clear()
+      sessionStorage.removeItem('streams')
+      sessionStorage.removeItem('time')
+
+      if (window.location.hash) {
+
+        var parsedHash = new URLSearchParams(window.location.hash.substr(1));
+
+        var accessToken = parsedHash.get('access_token')
+
+        var profile = await fetch('https://api.twitch.tv/helix/users',
+          {
+            "headers": {
+                "Client-ID": 'jrhhhmgv1e73eq5qnswjqh2p3u1uqr',
+                "Authorization": "Bearer " + accessToken
+            }
+          }
+        )
+        .then(resp => resp.json())
+        .then(resp => {
+          console.log(location.pathname)
+          console.log(resp.data[0].display_name)
+
+          sessionStorage.setItem('auth', true)
+          sessionStorage.setItem('display_name', resp.data[0].display_name)
+        })
+
+      }
+
+      
 
   }
 
@@ -54,7 +80,7 @@ function App() {
 
     loadGames()
   
-  }, [height]);
+  }, []);
 
   return (
 
@@ -66,16 +92,16 @@ function App() {
 
           <Container>
 
-            { games.length == 12 ? 
+            
             <div><Row style={{justifyContent:"center"}}>
 
-              <h1 style={{fontWeight:"bold", fontFamily:"Poppins", color:"#22FF8A"}}>Welcome to Shuffle.</h1>
+              <h1 style={{fontWeight:"bold", fontFamily:"Poppins", color:"#21FF8A"}}>Welcome to Shuffle.</h1>
 
             </Row>
 
             <Row style={{justifyContent:"center"}}>
 
-              <h6 style={{fontFamily:"Poppins", color:"#22FF8A", marginBottom:"2rem"}}>Select a game you'd like to watch</h6>
+              <h6 style={{fontFamily:"Poppins", color:"#21FF8A", marginBottom:"2rem"}}>Select a game you'd like to watch</h6>
 
             </Row>
 
@@ -95,7 +121,7 @@ function App() {
 
               ))}
 
-            </Row></div> : <div></div>}
+            </Row></div>
 
           </Container>
 
