@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import {Link} from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import NavBar from './NavBar.js';
 import { Container, Row, Col } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRandom } from '@fortawesome/free-solid-svg-icons'
 
 function App({location}) {
+
+  const history = useHistory()
 
   const [games, setGames] = useState([]);
 
@@ -68,11 +70,12 @@ function App({location}) {
 
           sessionStorage.setItem('auth', true)
           sessionStorage.setItem('display_name', resp.data[0].display_name)
+
+          history.push('/')
+
         })
 
-      }
-
-      
+      }      
 
   }
 

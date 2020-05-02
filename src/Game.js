@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import ReactTwitchEmbedVideo from "react-twitch-embed-video";
 import NavBar from './NavBar.js';
-import {Link} from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Container, Row, Col } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRandom, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
@@ -15,7 +15,9 @@ const Fade2 = styled.div`animation: 0.75s 0.25s ${keyframes`${fadeInDown}`}`;
 
 const Fade3 = styled.div`animation: 0.75s 0.5s ${keyframes`${fadeInDown}`}`;
 
-function App({ match }) {
+function App({ match, location }) {
+
+  const history = useHistory();
 
   const [height, setHeight] = useState('433px');
   
@@ -178,7 +180,8 @@ function App({ match }) {
 
       console.clear()
 
-      sessionStorage.clear()
+      sessionStorage.removeItem('streams')
+      sessionStorage.removeItem('time')
 
       setChannel('')
       
