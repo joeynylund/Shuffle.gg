@@ -65,10 +65,9 @@ function App({location}) {
         )
         .then(resp => resp.json())
         .then(resp => {
-          console.log(location.pathname)
-          console.log(resp.data[0].display_name)
 
           sessionStorage.setItem('auth', true)
+          sessionStorage.setItem('profile_image', resp.data[0].profile_image_url)
           sessionStorage.setItem('display_name', resp.data[0].display_name)
 
           history.push('/')

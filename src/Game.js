@@ -60,7 +60,6 @@ function App({ match, location }) {
       }).then((response) => response.json())
       .then((data) => {
         game_id = data.data[0].id;
-        console.log(game_id)
       })
   
     do {
@@ -103,7 +102,6 @@ function App({ match, location }) {
       }
       }).then((response) => response.json())
       .then((data) => {
-        console.log(data.data[0].profile_image_url)
         setLogo(data.data[0].profile_image_url)
       })
 
@@ -125,7 +123,6 @@ function App({ match, location }) {
       }
       }).then((response) => response.json())
       .then((data) => {
-        console.log(data.data[0].profile_image_url)
         setLogo(data.data[0].profile_image_url)
       })
 
@@ -196,8 +193,6 @@ function App({ match, location }) {
       loadFromCache()
 
     }
-
-    window.addEventListener('resize', handleResize);
   
   }, [height]);
 
