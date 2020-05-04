@@ -5,13 +5,15 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import Game from './Game';
+import Auth from './Auth';
 import * as serviceWorker from './serviceWorker';
 
 function Application() {
   return (
     <Router>
       <Route exact path='/' component={App}/>
-      <Route exact path='/:game' component={Game}/>
+      <Route exact path='/auth' component={Auth}/>
+      <Route exact path='/game/:game' component={Game}/>
     </Router>
   );
 }

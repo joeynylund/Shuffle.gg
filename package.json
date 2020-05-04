@@ -20,6 +20,7 @@
     "react-animations": "^1.0.0",
     "react-dom": "^16.13.1",
     "react-fontawesome": "^1.7.1",
+    "react-iframe": "^1.8.0",
     "react-ionicons-v5": "^1.2.0",
     "react-loading-skeleton": "^2.0.1",
     "react-router-dom": "^5.1.2",

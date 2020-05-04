@@ -1,16 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Link, useHistory } from 'react-router-dom';
-import NavBar from './NavBar.js';
-import { Container, Row, Col } from 'reactstrap';
+import { Button, Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter, Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  NavbarText } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRandom } from '@fortawesome/free-solid-svg-icons'
 
 function App({location}) {
 
-  const history = useHistory()
+  const [auth, setAuth] = useState(localStorage.getItem('auth') === 'true' ? 'true' : 'false')
 
   const [games, setGames] = useState([]);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
+
+  const NavBar2 = () => {
+    return (
+      <div>
+        <Navbar color="dark" dark expand="md">
+        <NavbarBrand href="/"><img src="./shuffle-logo.png" width="200px" /></NavbarBrand>
+          <NavbarToggler onClick={toggle} />
+          <Collapse isOpen={isOpen} navbar>
+            <Nav className="mr-auto" navbar>
+              
+            </Nav>
+            
+            {auth === 'true' ? <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle nav caret style={{marginTop:"-30px"}}>
+              <img src={localStorage.getItem("profile_image")} width="50px" height="50px" style={{borderRadius:"50%", display:"inline"}} /><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>{localStorage.getItem('display_name')}</h6>
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem onClick={(e) => {
+                  localStorage.clear();
+                  setAuth('false')
+                }}>
+                  Logout
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown> : <NavbarText style={{cursor:"pointer", color:"white", paddingRight:"15px"}} onClick={(e) => {
+                var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth&response_type=token")
+                var timer = setInterval(function() { 
+                    if(newWindow.closed) {
+                        clearInterval(timer);
+                        setAuth('true')
+                    }
+                }, 1000);
+              }}>Login with Twitch</NavbarText> }
+            
+          </Collapse>
+        </Navbar>
+      </div>
+    );
+  }
 
   async function loadGames() {
   
@@ -49,33 +102,9 @@ function App({location}) {
       sessionStorage.removeItem('streams')
       sessionStorage.removeItem('time')
 
-      if (window.location.hash) {
+  }
 
-        var parsedHash = new URLSearchParams(window.location.hash.substr(1));
-
-        var accessToken = parsedHash.get('access_token')
-
-        var profile = await fetch('https://api.twitch.tv/helix/users',
-          {
-            "headers": {
-                "Client-ID": 'jrhhhmgv1e73eq5qnswjqh2p3u1uqr',
-                "Authorization": "Bearer " + accessToken
-            }
-          }
-        )
-        .then(resp => resp.json())
-        .then(resp => {
-
-          sessionStorage.setItem('auth', true)
-          sessionStorage.setItem('profile_image', resp.data[0].profile_image_url)
-          sessionStorage.setItem('display_name', resp.data[0].display_name)
-
-          history.push('/')
-
-        })
-
-      }      
-
+  function logout() {
   }
 
   useEffect(() => {
@@ -88,7 +117,7 @@ function App({location}) {
 
     <div className="App">
 
-      <NavBar />
+      <NavBar2 />
         
         <header className="App-header">
 
@@ -113,7 +142,7 @@ function App({location}) {
                 
                   <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover">
                     <Link to={{
-                  pathname: "/" + game.name,
+                  pathname: "/game/" + game.name,
                 }}>
                     <img src={game.image} style={{borderRadius: "15px", width:"100%", height:"calc(100% - 30px)", animation: game.css}} className="animate hover2" />
                     <h6 style={{textAlign:"left", fontFamily:"Poppins", marginTop:"5px", marginBottom:"20px", animation: game.css}} className="animate">{game.name}</h6>
@@ -132,6 +161,7 @@ function App({location}) {
     </div>
 
   );
+
 }
 
 export default App;

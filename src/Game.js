@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import ReactTwitchEmbedVideo from "react-twitch-embed-video";
-import NavBar from './NavBar.js';
 import { Link, useHistory } from 'react-router-dom';
-import { Container, Row, Col } from 'reactstrap';
+import { Button, Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter, Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  NavbarText } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRandom, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import styled, { keyframes } from 'styled-components';
@@ -18,6 +28,12 @@ const Fade3 = styled.div`animation: 0.75s 0.5s ${keyframes`${fadeInDown}`}`;
 function App({ match, location }) {
 
   const history = useHistory();
+
+  const [auth, setAuth] = useState(localStorage.getItem('auth') === 'true' ? 'true' : 'false')
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
 
   const [height, setHeight] = useState('433px');
   
@@ -37,9 +53,47 @@ function App({ match, location }) {
 
   var currentTime = time.getTime();
 
+  var token = ''
+
+  const NavBar2 = () => {
+    return (
+      <div>
+        <Navbar color="dark" dark expand="md">
+        <NavbarBrand href="/"><img src="../shuffle-logo.png" width="200px" /></NavbarBrand>
+          <NavbarToggler onClick={toggle} />
+          <Collapse isOpen={isOpen} navbar>
+            <Nav className="mr-auto" navbar>
+              
+            </Nav>
+            
+            {auth === 'true' ? <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle nav caret style={{marginTop:"-30px"}}>
+              <img src={localStorage.getItem("profile_image")} width="50px" height="50px" style={{borderRadius:"50%", display:"inline"}} /><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>{localStorage.getItem('display_name')}</h6>
+              </DropdownToggle>
+              <DropdownMenu right>
+              <DropdownItem onClick={(e) => {
+                  localStorage.clear();
+                  setAuth('false')
+                }}>Logout
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown> : <NavbarText onClick={(e) => {
+                var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth&response_type=token")
+                var timer = setInterval(function() { 
+                    if(newWindow.closed) {
+                        clearInterval(timer);
+                        setAuth('true')
+                    }
+                }, 1000);
+              }}>Login with Twitch</NavbarText> }
+            
+          </Collapse>
+        </Navbar>
+      </div>
+    );
+  }
+
   async function loadStreams() {
-  
-    var token = ''
 
     var auth = await fetch('https://id.twitch.tv/oauth2/token?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&client_secret=ftkfalr4ztrnj1lpn1cgm61elygbxz&grant_type=client_credentials', {
       method: 'POST'
@@ -84,7 +138,7 @@ function App({ match, location }) {
       })
     } while(cursor !== undefined)
 
-    cachedTime = time.setMinutes(time.getMinutes() + 2)
+    cachedTime = time.setMinutes(time.getMinutes() + 5)
 
     sessionStorage.removeItem('time')
 
@@ -99,6 +153,7 @@ function App({ match, location }) {
     var image = await fetch('https://api.twitch.tv/helix/users?login=' + randomStream.user_name + '', {
       headers: {
         'Client-ID': 'jrhhhmgv1e73eq5qnswjqh2p3u1uqr',
+        'Authorization': token,
       }
       }).then((response) => response.json())
       .then((data) => {
@@ -110,6 +165,13 @@ function App({ match, location }) {
   }
 
   async function loadFromCache() {
+
+    var auth = await fetch('https://id.twitch.tv/oauth2/token?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&client_secret=ftkfalr4ztrnj1lpn1cgm61elygbxz&grant_type=client_credentials', {
+      method: 'POST'
+    }).then((response) => response.json())
+    .then((data) => {
+      token = 'Bearer ' + data.access_token;
+    })
   
     streams = JSON.parse(sessionStorage.getItem('streamsArray'))
 
@@ -120,6 +182,7 @@ function App({ match, location }) {
     var image = await fetch('https://api.twitch.tv/helix/users?login=' + randomStream.user_name + '', {
       headers: {
         'Client-ID': 'jrhhhmgv1e73eq5qnswjqh2p3u1uqr',
+        'Authorization': token,
       }
       }).then((response) => response.json())
       .then((data) => {
@@ -134,6 +197,9 @@ function App({ match, location }) {
 
     window.location.reload()
 
+  }
+
+  function logout() {
   }
 
   function handleResize() {
@@ -200,7 +266,7 @@ function App({ match, location }) {
 
     <div className="App">
 
-      <NavBar />
+      <NavBar2 />
         
         <header className="App-header">
 
@@ -250,6 +316,7 @@ function App({ match, location }) {
     </div>
 
   );
+  
 }
 
 export default App;
