@@ -38,7 +38,7 @@ function App({location}) {
             </Nav>
             
             {auth === 'true' ? <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret style={{marginTop:"-30px"}}>
+              <DropdownToggle nav caret>
               <img src={localStorage.getItem("profile_image")} width="50px" height="50px" style={{borderRadius:"50%", display:"inline"}} /><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>{localStorage.getItem('display_name')}</h6>
               </DropdownToggle>
               <DropdownMenu right>
@@ -50,7 +50,7 @@ function App({location}) {
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown> : <NavbarText style={{cursor:"pointer", color:"white", paddingRight:"15px"}} onClick={(e) => {
-                var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth&response_type=token")
+                var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=https%3A%2F%2Fshuffle-gg.web.app%2Fauth&response_type=token")
                 var timer = setInterval(function() { 
                     if(newWindow.closed) {
                         clearInterval(timer);
@@ -126,7 +126,7 @@ function App({location}) {
             
             <div><Row style={{justifyContent:"center"}}>
 
-              <h1 style={{fontWeight:"bold", fontFamily:"Poppins", color:"#21FF8A"}}>Welcome to Shuffle.</h1>
+              <h1 style={{fontWeight:"bold", fontFamily:"Poppins", color:"#21FF8A"}}>Let's get started.</h1>
 
             </Row>
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import Spinner from 'react-spinkit';
 import ReactTwitchEmbedVideo from "react-twitch-embed-video";
 import { Link, useHistory } from 'react-router-dom';
 import { Button, Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter, Collapse,
@@ -67,7 +68,7 @@ function App({ match, location }) {
             </Nav>
             
             {auth === 'true' ? <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret style={{marginTop:"-30px"}}>
+              <DropdownToggle nav caret>
               <img src={localStorage.getItem("profile_image")} width="50px" height="50px" style={{borderRadius:"50%", display:"inline"}} /><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>{localStorage.getItem('display_name')}</h6>
               </DropdownToggle>
               <DropdownMenu right>
@@ -77,8 +78,8 @@ function App({ match, location }) {
                 }}>Logout
                 </DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown> : <NavbarText onClick={(e) => {
-                var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth&response_type=token")
+            </UncontrolledDropdown> : <NavbarText style={{cursor:"pointer", color:"white", paddingRight:"15px"}} onClick={(e) => {
+                var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=https%3A%2F%2Fshuffle-gg.web.app%2Fauth&response_type=token")
                 var timer = setInterval(function() { 
                     if(newWindow.closed) {
                         clearInterval(timer);
@@ -273,12 +274,12 @@ function App({ match, location }) {
           <Container>
 
               { 
-                channel === '' ? <h2 style={{textAlign:"left", fontFamily:"Poppins"}}>{quote()}</h2> : 
+                channel === '' ? <div><h2 style={{fontFamily:"Poppins"}}>Gathering all of the {match.params.game} streams...</h2><Spinner name="ball-pulse-sync" color="#22FF8A" /></div> : 
               <div>
 
               <Row>
 
-                <h2 style={{fontFamily:"Poppins", marginBottom:"10px"}}><Link to={{
+                <h2 style={{fontFamily:"Poppins", marginBottom:"10px", paddingLeft:"15px"}}><Link to={{
                   pathname: "/",
                 }}><FontAwesomeIcon icon={faAngleLeft} style={{color:"#22FF8A",cursor:'pointer'}} /></Link> {match.params.game}</h2>
 

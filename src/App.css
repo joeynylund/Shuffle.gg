@@ -1,7 +1,7 @@
 .App {
   text-align: center;
   background-image: url("./topography3.jpg");
-  background-size: contain;
+  background-size: cover;
 }
 
 .App-logo {
@@ -214,4 +214,8 @@ a {
 a:hover {
   text-decoration: none;
   color: #FFF;
+}
+
+.dropdown {
+  list-style: none;
 }
