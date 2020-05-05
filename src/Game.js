@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRandom, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import styled, { keyframes } from 'styled-components';
 import { fadeInDown } from 'react-animations';
+import ReactGA from 'react-ga';
 
 const Fade = styled.div`animation: 0.75s ${keyframes`${fadeInDown}`}`;
 
@@ -237,6 +238,9 @@ function App({ match, location }) {
   }
 
   useEffect(() => {
+
+    ReactGA.initialize('UA-165630956-1');
+    ReactGA.pageview(window.location.pathname);
 
     if (window.innerWidth < 1200 && window.innerWidth > 991) {
       setHeight('332px')

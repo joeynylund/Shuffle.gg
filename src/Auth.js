@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import './App.css';
 import { Container, Row, Navbar, NavbarBrand } from 'reactstrap';
+import ReactGA from 'react-ga';
 
 function App() {
 
@@ -58,7 +59,16 @@ function App() {
     }
 }
 
-auth()
+useEffect(() => {
+
+    ReactGA.initialize('UA-165630956-1');
+    ReactGA.pageview(window.location.pathname);
+
+    auth()
+  
+  }, []);
+
+
 
   return (
 

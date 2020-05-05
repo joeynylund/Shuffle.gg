@@ -11,7 +11,8 @@ import { Container, Row, Col, Collapse,
   DropdownMenu,
   DropdownItem,
   NavbarText } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ReactGA from 'react-ga';
 
 function App({location}) {
 
@@ -102,6 +103,9 @@ function App({location}) {
   }
 
   useEffect(() => {
+
+    ReactGA.initialize('UA-165630956-1');
+    ReactGA.pageview(window.location.pathname);
 
     loadGames()
   
