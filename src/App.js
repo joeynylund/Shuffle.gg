@@ -41,6 +41,10 @@ function App({location}) {
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem onClick={(e) => {
+                  ReactGA.event({
+                    category: "Logged Out",
+                    action: "User logged out",
+                  });
                   localStorage.clear();
                   setAuth('false')
                 }}>
@@ -48,6 +52,10 @@ function App({location}) {
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown> : <NavbarText style={{cursor:"pointer", color:"white", paddingRight:"15px"}} onClick={(e) => {
+              ReactGA.event({
+                category: "Logged In",
+                action: "User logged in with Twitch",
+              });
                 var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=https%3A%2F%2Fshuffle-gg.web.app%2Fauth&response_type=token")
                 var timer = setInterval(function() { 
                     if(newWindow.closed) {
