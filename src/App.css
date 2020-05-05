@@ -24,7 +24,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-  margin-top: -74px;
+  margin-top: -98px;
 }
 
 .streamer-name {
@@ -202,8 +202,12 @@
   cursor: pointer;
 }
 
+.hover2:hover {
+  box-shadow: -1px 1px #22FF8A, -2px 2px #22FF8A, -3px 3px #22FF8A, -4px 4px #22FF8A;
+}
+
 .hover:hover {
-  transform: scale(1.05);
+  transform: translate(4px, -4px);
 }
 
 a {

@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import Spinner from 'react-spinkit';
 import ReactTwitchEmbedVideo from "react-twitch-embed-video";
-import { Link, useHistory } from 'react-router-dom';
-import { Button, Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter, Collapse,
+import { Link } from 'react-router-dom';
+import { Container, Row, Col, Collapse,
   Navbar,
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
-  NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -28,13 +26,7 @@ const Fade3 = styled.div`animation: 0.75s 0.5s ${keyframes`${fadeInDown}`}`;
 
 function App({ match, location }) {
 
-  const history = useHistory();
-
   const [auth, setAuth] = useState(localStorage.getItem('auth') === 'true' ? 'true' : 'false')
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggle = () => setIsOpen(!isOpen);
 
   const [height, setHeight] = useState('433px');
   
@@ -56,11 +48,15 @@ function App({ match, location }) {
 
   var token = ''
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
+
   const NavBar2 = () => {
     return (
       <div>
         <Navbar color="dark" dark expand="md">
-        <NavbarBrand href="/"><img src="../shuffle-logo.png" width="200px" /></NavbarBrand>
+        <NavbarBrand href="/"><img src="../shuffle-logo.png" alt="Shuffle.gg Logo" width="200px" /></NavbarBrand>
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="mr-auto" navbar>
@@ -69,7 +65,7 @@ function App({ match, location }) {
             
             {auth === 'true' ? <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
-              <img src={localStorage.getItem("profile_image")} width="50px" height="50px" style={{borderRadius:"50%", display:"inline"}} /><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>{localStorage.getItem('display_name')}</h6>
+              <img src={localStorage.getItem("profile_image")} alt="Twitch User Logo" width="50px" height="50px" style={{borderRadius:"50%", display:"inline"}} /><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>{localStorage.getItem('display_name')}</h6>
               </DropdownToggle>
               <DropdownMenu right>
               <DropdownItem onClick={(e) => {
@@ -196,11 +192,25 @@ function App({ match, location }) {
 
   function shuffle() {
 
-    window.location.reload()
+    cachedTime = sessionStorage.getItem('time')
 
-  }
+    if (currentTime > cachedTime) {
+      
+      console.clear()
 
-  function logout() {
+      sessionStorage.removeItem('streams')
+      sessionStorage.removeItem('time')
+      
+      loadStreams()
+
+    } else {
+
+      console.clear()
+      
+      loadFromCache()
+
+    }
+
   }
 
   function handleResize() {
@@ -218,7 +228,7 @@ function App({ match, location }) {
       "Shuffling the deck...",
       "Finding your match...",
       "You're going to like this stream...we hope...",
-      "Keep swiping! Uhhh, we meant shuffling!",,
+      "Keep swiping! Uhhh, we mean shuffling!",
     ]
 
     var randomQuote = quotes[Math.floor(Math.random()*quotes.length)];
@@ -240,20 +250,15 @@ function App({ match, location }) {
 
     if (currentTime > cachedTime) {
       
-      console.log("Pulling Streams!")
-
       console.clear()
 
       sessionStorage.removeItem('streams')
       sessionStorage.removeItem('time')
 
-      setChannel('')
       
       loadStreams()
 
     } else {
-
-      console.log("Cached Streams!")
 
       console.clear()
       
@@ -261,7 +266,7 @@ function App({ match, location }) {
 
     }
   
-  }, [height]);
+  }, []);
 
   return (
 
@@ -274,7 +279,7 @@ function App({ match, location }) {
           <Container>
 
               { 
-                channel === '' ? <div><h2 style={{fontFamily:"Poppins"}}>Gathering all of the {match.params.game} streams...</h2><Spinner name="ball-pulse-sync" color="#22FF8A" /></div> : 
+                channel === '' ? <div><h2 style={{fontFamily:"Poppins"}}>{quote()}</h2><Spinner name="ball-pulse-sync" color="#22FF8A" /></div> : 
               <div>
 
               <Row>
@@ -288,7 +293,7 @@ function App({ match, location }) {
 
                 <Col xs="1" md="2" xl="1" className="logo-container">
                 
-                  <Fade2><img src={logo} className="fade2 logo" style={{ borderRadius: '50%', width: '100%' }}/></Fade2>
+                  <Fade2><img src={logo} alt="Twitch User Logo" className="fade2 logo" style={{ borderRadius: '50%', width: '100%' }}/></Fade2>
               
                 </Col>
 

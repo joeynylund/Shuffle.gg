@@ -10,7 +10,7 @@ function App() {
         return (
           <div>
             <Navbar color="dark" dark expand="md">
-            <NavbarBrand href="/"><img src="./shuffle-logo.png" width="200px" /></NavbarBrand>
+            <NavbarBrand href="/"><img src="./shuffle-logo.png" alt="Shuffle.gg Logo" width="200px" /></NavbarBrand>
             </Navbar>
           </div>
         );
@@ -28,7 +28,6 @@ function App() {
     }).then((response) => response.json())
     .then((data) => {
       token = 'Bearer ' + data.access_token;
-      console.log(token)
     })
 
         var parsedHash = new URLSearchParams(window.location.hash.substr(1));

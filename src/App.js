@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { Link, useHistory } from 'react-router-dom';
-import { Button, Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter, Collapse,
+import { Link } from 'react-router-dom';
+import { Container, Row, Col, Collapse,
   Navbar,
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
-  NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
   NavbarText } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRandom } from '@fortawesome/free-solid-svg-icons'
 
 function App({location}) {
 
@@ -30,7 +27,7 @@ function App({location}) {
     return (
       <div>
         <Navbar color="dark" dark expand="md">
-        <NavbarBrand href="/"><img src="./shuffle-logo.png" width="200px" /></NavbarBrand>
+        <NavbarBrand href="/"><img src="./shuffle-logo.png" alt="Shuffle.gg Logo" width="200px" /></NavbarBrand>
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="mr-auto" navbar>
@@ -39,7 +36,7 @@ function App({location}) {
             
             {auth === 'true' ? <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
-              <img src={localStorage.getItem("profile_image")} width="50px" height="50px" style={{borderRadius:"50%", display:"inline"}} /><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>{localStorage.getItem('display_name')}</h6>
+              <img src={localStorage.getItem("profile_image")} alt="Twitch User Logo" width="50px" height="50px" style={{borderRadius:"50%", display:"inline"}} /><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>{localStorage.getItem('display_name')}</h6>
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem onClick={(e) => {
@@ -104,9 +101,6 @@ function App({location}) {
 
   }
 
-  function logout() {
-  }
-
   useEffect(() => {
 
     loadGames()
@@ -122,17 +116,16 @@ function App({location}) {
         <header className="App-header">
 
           <Container>
-
             
-            <div><Row style={{justifyContent:"center"}}>
+            {games.length > 1 ? <div><Row style={{justifyContent:"center"}}>
 
-              <h1 style={{fontWeight:"bold", fontFamily:"Poppins", color:"#21FF8A"}}>Let's get started.</h1>
+              <h1 style={{fontWeight:"bold", fontFamily:"Poppins", color:"#21FF8A", padding:"0px 10px", animation:"fadeIns 0.5s 0s"}} className="animate">Let's find something to watch.</h1>
 
             </Row>
 
             <Row style={{justifyContent:"center"}}>
 
-              <h6 style={{fontFamily:"Poppins", color:"#21FF8A", marginBottom:"2rem"}}>Select a game you'd like to watch</h6>
+              <h6 style={{fontFamily:"Poppins", color:"#21FF8A", marginBottom:"2rem", animation:"fadeIns 0.5s 0.25s"}} className="animate">To get started, select a game</h6>
 
             </Row>
 
@@ -140,11 +133,11 @@ function App({location}) {
 
               {games.map(game => (
                 
-                  <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover">
+                  <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover" key={game.name}>
                     <Link to={{
                   pathname: "/game/" + game.name,
                 }}>
-                    <img src={game.image} style={{borderRadius: "15px", width:"100%", height:"calc(100% - 30px)", animation: game.css}} className="animate hover2" />
+                    <img src={game.image} alt={game.name + " Box Art"} style={{borderRadius: "15px", width:"100%", height:"calc(100% - 30px)", animation: game.css}} className="animate hover2" />
                     <h6 style={{textAlign:"left", fontFamily:"Poppins", marginTop:"5px", marginBottom:"20px", animation: game.css}} className="animate">{game.name}</h6>
                     </Link>
                   </Col>
@@ -152,7 +145,7 @@ function App({location}) {
 
               ))}
 
-            </Row></div>
+            </Row></div> : <div></div>}
 
           </Container>
 
