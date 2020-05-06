@@ -61,7 +61,7 @@ function App({location}) {
                 category: "Logged In",
                 action: "User logged in with Twitch",
               });
-                var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth&response_type=token")
+                var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=https://shuffle-gg.web.app/auth&response_type=token")
                 var timer = setInterval(function() { 
                     if(newWindow.closed) {
                         clearInterval(timer);
