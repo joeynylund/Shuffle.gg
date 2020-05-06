@@ -6,17 +6,20 @@ import { Container, Row, Col, Collapse,
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
-  NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  NavbarText } from 'reactstrap';
+  NavbarText,
+  Alert } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactGA from 'react-ga';
 
 function App({location}) {
+
+  const [visible, setVisible] = useState(false);
+
+  const onDismiss = () => setVisible(false);
 
   const [auth, setAuth] = useState(localStorage.getItem('auth') === 'true' ? 'true' : 'false')
 
@@ -36,12 +39,7 @@ function App({location}) {
             <Nav className="mr-auto" navbar>
               
             </Nav>
-            <NavItem>
-              <NavLink href="/components/">About Us</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="/components/">How It Works</NavLink>
-            </NavItem>
+
             {auth === 'true' ? <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
               <img src={localStorage.getItem("profile_image")} alt="Twitch User Logo" width="50px" height="50px" style={{borderRadius:"50%", display:"inline"}} /><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>{localStorage.getItem('display_name')}</h6>
@@ -63,14 +61,21 @@ function App({location}) {
                 category: "Logged In",
                 action: "User logged in with Twitch",
               });
-                var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=https%3A%2F%2Fshuffle-gg.web.app%2Fauth&response_type=token")
+                var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth&response_type=token")
                 var timer = setInterval(function() { 
                     if(newWindow.closed) {
                         clearInterval(timer);
-                        setAuth('true')
+                        setAuth('true');
+                        if (localStorage.getItem('display_name') != null) {
+                          alert('Success');
+                        } else {
+                          setAuth('false')
+                          setVisible(true)
+                        }
                     }
+                    
                 }, 1000);
-              }}>Login with Twitch</NavbarText> }
+              }}><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>Login with Twitch</h6></NavbarText> }
             
           </Collapse>
         </Navbar>
@@ -129,6 +134,10 @@ function App({location}) {
   return (
 
     <div className="App">
+
+      <Alert color="danger" isOpen={visible} toggle={onDismiss}>
+        Hmmm that didn't work. Try logging in again!
+      </Alert>
 
       <NavBar2 />
         

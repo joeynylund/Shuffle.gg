@@ -8,13 +8,11 @@ import { Container, Row, Col, Collapse,
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
-  NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  NavbarText } from 'reactstrap';
+  NavbarText, Alert } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRandom, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import styled, { keyframes } from 'styled-components';
@@ -28,6 +26,10 @@ const Fade2 = styled.div`animation: 0.75s 0.25s ${keyframes`${fadeInDown}`}`;
 const Fade3 = styled.div`animation: 0.75s 0.5s ${keyframes`${fadeInDown}`}`;
 
 function App({ match, location }) {
+
+  const [visible, setVisible] = useState(false);
+
+  const onDismiss = () => setVisible(false);
 
   const [auth, setAuth] = useState(localStorage.getItem('auth') === 'true' ? 'true' : 'false')
 
@@ -65,12 +67,6 @@ function App({ match, location }) {
             <Nav className="mr-auto" navbar>
               
             </Nav>
-            <NavItem>
-              <NavLink href="/components/">About Us</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="/components/">How It Works</NavLink>
-            </NavItem>
             {auth === 'true' ? <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
               <img src={localStorage.getItem("profile_image")} alt="Twitch User Logo" width="50px" height="50px" style={{borderRadius:"50%", display:"inline"}} /><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>{localStorage.getItem('display_name')}</h6>
@@ -93,12 +89,19 @@ function App({ match, location }) {
                 });
                 var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=https%3A%2F%2Fshuffle-gg.web.app%2Fauth&response_type=token")
                 var timer = setInterval(function() { 
-                    if(newWindow.closed) {
-                        clearInterval(timer);
-                        setAuth('true')
-                    }
-                }, 1000);
-              }}>Login with Twitch</NavbarText> }
+                  if(newWindow.closed) {
+                      clearInterval(timer);
+                      setAuth('true');
+                      if (localStorage.getItem('display_name') != null) {
+                        alert('Success');
+                      } else {
+                        setAuth('false')
+                        setVisible(true)
+                      }
+                  }
+                  
+              }, 1000);
+              }}><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>Login with Twitch</h6></NavbarText> }
             
           </Collapse>
         </Navbar>
@@ -256,7 +259,7 @@ function App({ match, location }) {
       "'Just keep shuffling.' - Finding Nemo",
       "'Thank you, next' - Ariana Grande",
       "'My mama always said shuffle was like a box of chocolates. You never know what stream you're gonna get.' - Forrest Gump",
-      "'“I am your father.' - Star Wars",
+      "'I am your father.' - Star Wars",
     ]
 
     var randomQuote = quotes[Math.floor(Math.random()*quotes.length)];
@@ -302,6 +305,10 @@ function App({ match, location }) {
   return (
 
     <div className="App">
+
+      <Alert color="danger" isOpen={visible} toggle={onDismiss}>
+        Hmmm that didn't work. Try logging in again!
+      </Alert>
 
       <NavBar2 />
         

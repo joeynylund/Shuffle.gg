@@ -50,10 +50,12 @@ function App() {
           localStorage.setItem('profile_image', resp.data[0].profile_image_url)
           localStorage.setItem('display_name', resp.data[0].display_name)
 
-          window.close()
 
           setText("You're logged in! Feel free to close this tab and return to Shuffle!")
 
+        })
+        .catch(function(error){
+          console.log('error')
         })
 
     }
