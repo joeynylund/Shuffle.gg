@@ -223,3 +223,11 @@ a:hover {
 .dropdown {
   list-style: none;
 }
+
+.nav-link {
+  padding: 0.5rem 1rem!important;
+}
+
+.nav-item {
+  list-style: none;
+}

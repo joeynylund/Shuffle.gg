@@ -6,6 +6,8 @@ import { Container, Row, Col, Collapse,
   NavbarToggler,
   NavbarBrand,
   Nav,
+  NavItem,
+  NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -34,7 +36,12 @@ function App({location}) {
             <Nav className="mr-auto" navbar>
               
             </Nav>
-            
+            <NavItem>
+              <NavLink href="/components/">About Us</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/components/">How It Works</NavLink>
+            </NavItem>
             {auth === 'true' ? <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
               <img src={localStorage.getItem("profile_image")} alt="Twitch User Logo" width="50px" height="50px" style={{borderRadius:"50%", display:"inline"}} /><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>{localStorage.getItem('display_name')}</h6>
@@ -51,7 +58,7 @@ function App({location}) {
                   Logout
                 </DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown> : <NavbarText style={{cursor:"pointer", color:"white", paddingRight:"15px"}} onClick={(e) => {
+            </UncontrolledDropdown> : <NavbarText style={{cursor:"pointer", color:"white", padding:"0.5rem 1rem"}} onClick={(e) => {
               ReactGA.event({
                 category: "Logged In",
                 action: "User logged in with Twitch",
