@@ -231,3 +231,9 @@ a:hover {
 .nav-item {
   list-style: none;
 }
+
+@media only screen and (min-width: 1921px) {
+  .container {
+    max-width: 1740px!important;
+  }
+}

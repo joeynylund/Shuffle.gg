@@ -17,24 +17,23 @@ import ReactGA from 'react-ga';
 
 function App({location}) {
 
-  const [visible, setVisible] = useState(false);
-
-  const onDismiss = () => setVisible(false);
-
   const [auth, setAuth] = useState(localStorage.getItem('auth') === 'true' ? 'true' : 'false')
 
   const [games, setGames] = useState([]);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
 
-  const toggle = () => setIsOpen(!isOpen);
+  const onDismiss = () => setVisible(false);
 
   const NavBar2 = () => {
+
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
       <div>
         <Navbar color="dark" dark expand="md">
         <NavbarBrand href="/"><img src="./shuffle-logo.png" alt="Shuffle.gg Logo" width="200px" /></NavbarBrand>
-          <NavbarToggler onClick={toggle} />
+          <NavbarToggler onClick={(e) => setIsOpen(!isOpen)} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="mr-auto" navbar>
               
@@ -67,7 +66,6 @@ function App({location}) {
                         clearInterval(timer);
                         setAuth('true');
                         if (localStorage.getItem('display_name') != null) {
-                          alert('Success');
                         } else {
                           setAuth('false')
                           setVisible(true)

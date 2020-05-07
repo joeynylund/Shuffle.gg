@@ -55,14 +55,15 @@ function App({ match, location }) {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggle = () => setIsOpen(!isOpen);
-
   const NavBar2 = () => {
+
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
       <div>
         <Navbar color="dark" dark expand="md">
         <NavbarBrand href="/"><img src="../shuffle-logo.png" alt="Shuffle.gg Logo" width="200px" /></NavbarBrand>
-          <NavbarToggler onClick={toggle} />
+          <NavbarToggler onClick={(e) => setIsOpen(!isOpen)} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="mr-auto" navbar>
               
@@ -93,7 +94,6 @@ function App({ match, location }) {
                       clearInterval(timer);
                       setAuth('true');
                       if (localStorage.getItem('display_name') != null) {
-                        alert('Success');
                       } else {
                         setAuth('false')
                         setVisible(true)
@@ -122,13 +122,24 @@ function App({ match, location }) {
 
     var game_id = '';
 
-    var getGame = await fetch('https://api.twitch.tv/helix/games?name=' + match.params.game + '', {
+    var gameName = '';
+
+    if(match.params.game.includes('&') === true) {
+      gameName = match.params.game.replace('&', '%26');
+      console.log(gameName)
+    } else {
+      gameName = match.params.game;
+      console.log(gameName)
+    }
+
+    var getGame = await fetch('https://api.twitch.tv/helix/games?name=' + gameName + '', {
       headers: {
         'Client-ID': 'jrhhhmgv1e73eq5qnswjqh2p3u1uqr',
         'Authorization': token,
       }
       }).then((response) => response.json())
       .then((data) => {
+        console.log(data)
         game_id = data.data[0].id;
       })
   
@@ -253,7 +264,7 @@ function App({ match, location }) {
       "Finding your match...",
       "You're going to like this stream...we hope...",
       "Keep swiping! Uhhh, we mean shuffling!",
-      "Toto, I've a feeling we're not in that last stream anymore.' - The Wizard of Oz",
+      "'Toto, I've a feeling we're not in that last stream anymore.' - The Wizard of Oz",
       "'To the next stream and beyond!' - Toy Story",
       "'Nobody puts this next streamer in a corner.' - Dirty Dancing",
       "'Just keep shuffling.' - Finding Nemo",
@@ -272,7 +283,9 @@ function App({ match, location }) {
     ReactGA.initialize('UA-165630956-1');
     ReactGA.pageview(window.location.pathname);
 
-    if (window.innerWidth < 1200 && window.innerWidth > 991) {
+    if(window.innerWidth > 1921) {
+      setHeight('771px')
+    } else if (window.innerWidth < 1200 && window.innerWidth > 991) {
       setHeight('332px')
     } else if (window.innerWidth < 992 && window.innerWidth > 766) {
       setHeight('199px')
@@ -331,7 +344,7 @@ function App({ match, location }) {
 
                 <Col xs="1" md="2" xl="1" className="logo-container">
                 
-                  <Fade2><img src={logo} alt="Twitch User Logo" className="fade2 logo" style={{ borderRadius: '50%', width: '100%' }}/></Fade2>
+                  <Fade2><img src={logo} alt="Twitch User Logo" className="fade2 logo" style={{ borderRadius: '50%', width: '100%', maxWidth: "90px" }}/></Fade2>
               
                 </Col>
 
