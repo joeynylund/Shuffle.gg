@@ -268,7 +268,7 @@ function App({ match, location }) {
       "'To the next stream and beyond!' - Toy Story",
       "'Nobody puts this next streamer in a corner.' - Dirty Dancing",
       "'Just keep shuffling.' - Finding Nemo",
-      "'Thank you, next' - Ariana Grande",
+      "'Thank you, next stream' - Ariana Grande",
       "'My mama always said shuffle was like a box of chocolates. You never know what stream you're gonna get.' - Forrest Gump",
       "'I am your father.' - Star Wars",
     ]

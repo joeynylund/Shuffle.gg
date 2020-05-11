@@ -11,15 +11,22 @@ import { Container, Row, Col, Collapse,
   DropdownMenu,
   DropdownItem,
   NavbarText,
-  Alert } from 'reactstrap';
+  Alert,
+  Input } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactGA from 'react-ga';
 
 function App({location}) {
 
+  const [search, setSearch] = useState('');
+
+  const [searchResults, setSearchReults] = useState([]);
+
   const [auth, setAuth] = useState(localStorage.getItem('auth') === 'true' ? 'true' : 'false')
 
   const [games, setGames] = useState([]);
+
+  const [featured, setFeatured] = useState([]);
 
   const [visible, setVisible] = useState(false);
 
@@ -92,7 +99,7 @@ function App({location}) {
       token = 'Bearer ' + data.access_token;
     })
   
-      var load = await fetch('https://api.twitch.tv/helix/games/top?first=12', {
+      var load = await fetch('https://api.twitch.tv/helix/games/top?first=100', {
       headers: {
         'Client-ID': 'jrhhhmgv1e73eq5qnswjqh2p3u1uqr',
         'Authorization': token,
@@ -155,9 +162,37 @@ function App({location}) {
 
             </Row>
 
+            <Row style={{paddingBottom:"30px"}}>
+              
+              <Input style={{animation:"fadeIns 0.5s 0.25s"}} className="animate" type="text" value={search} onChange={(e) => {
+                setSearch(e.target.value);
+                setSearchReults([])
+                if (search.length > 0) {
+                setSearchReults(games)
+                  const test = games.filter(gun => {
+                    return gun.name.toLowerCase().includes(e.target.value.toLowerCase())
+                  });
+                setSearchReults(test)
+                }
+
+    
+
+    }} placeholder="Search for a game..." />
+              
+            </Row>
+
             <Row>
 
-              {games.map(game => (
+            {search.length > 0 ? search.length > 0 ? searchResults.slice(0,12).map(result => (
+              <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} key={result.name}>
+              <Link to={{
+            pathname: "/game/" + result.name,
+          }}>
+              <img src={result.image} alt={result.name + " Box Art"} style={{borderRadius: "15px", width:"100%", height:"calc(100% - 30px)"}} className="hover2" />
+              <h6 style={{textAlign:"left", fontFamily:"Poppins", marginTop:"5px", marginBottom:"20px"}}>{result.name}</h6>
+              </Link>
+            </Col>
+            )) : <p>Keep typing</p> : games.slice(0,12).map(game => (
                 
                   <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover" key={game.name}>
                     <Link to={{
@@ -171,7 +206,9 @@ function App({location}) {
 
               ))}
 
-            </Row></div> : <div></div>}
+            </Row>
+            
+            </div> : <div></div>}
 
           </Container>
 
