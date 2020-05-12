@@ -9,9 +9,9 @@ import { faTwitter, faDiscord } from '@fortawesome/free-brands-svg-icons';
 function Footer() {
 
     return (
-    <Navbar color="dark" dark className="fixed-bottom">
+    <Navbar color="dark" dark className="footer">
                 <Container style={{justifyContent: 'flex-end'}}>
-                    <NavbarBrand ><a href="https://twitter.com/shufflegg" target="_blank"><FontAwesomeIcon icon={faTwitter} style={{color:"#22FF8A",cursor:'pointer',marginRight:"15px"}} /></a><a href="https://discord.gg/bXAHTSx" target="_blank"><FontAwesomeIcon icon={faDiscord} style={{color:"#22FF8A",cursor:'pointer'}} /></a></NavbarBrand>
+                    <NavbarBrand ></NavbarBrand>
                 </Container>
             </Navbar>
     )

@@ -12,7 +12,8 @@ import { Container, Row, Col, Collapse,
   NavbarText,
   Alert } from 'reactstrap';
 import ReactGA from 'react-ga';
-import Footer from './Footer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTwitter, faDiscord } from '@fortawesome/free-brands-svg-icons';
 
 function App() {
 
@@ -35,8 +36,13 @@ function App() {
             <Nav className="mr-auto" navbar>
               
             </Nav>
-
-            {auth === 'true' ? <UncontrolledDropdown nav inNavbar>
+            <NavbarText>
+              <a href="https://twitter.com/shufflegg" target="_blank"><FontAwesomeIcon icon={faTwitter} size="2x" style={{color:"#22FF8A",cursor:'pointer',marginRight:"15px"}} /></a>
+            </NavbarText>
+            <NavbarText>
+              <a href="https://discord.gg/bXAHTSx" target="_blank"><FontAwesomeIcon icon={faDiscord} size="2x" style={{color:"#22FF8A",cursor:'pointer'}} /></a>
+            </NavbarText>
+            {auth === 'true' ? <UncontrolledDropdown nav inNavbar style={{display:"block"}}>
               <DropdownToggle nav caret>
               <img src={localStorage.getItem("profile_image")} alt="Twitch User Logo" width="50px" height="50px" style={{borderRadius:"50%", display:"inline"}} /><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>{localStorage.getItem('display_name')}</h6>
               </DropdownToggle>
@@ -52,7 +58,7 @@ function App() {
                   Logout
                 </DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown> : <NavbarText style={{cursor:"pointer", color:"white", padding:"0.5rem 1rem"}} onClick={(e) => {
+            </UncontrolledDropdown> : <NavbarText style={{cursor:"pointer", color:"white", padding:"0.5rem 1rem", display:"block"}} onClick={(e) => {
               ReactGA.event({
                 category: "Logged In",
                 action: "User logged in with Twitch",
@@ -114,8 +120,6 @@ function App() {
           </Container>
 
         </header>
-
-        <Footer />
 
     </div>
 

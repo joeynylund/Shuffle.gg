@@ -260,3 +260,7 @@ a:hover {
   color: #fff;
   font-family: Poppins;
 }
+
+.footer {
+  background-color: #121212!important;
+}
