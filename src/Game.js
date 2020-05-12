@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import Spinner from 'react-spinkit';
 import ReactTwitchEmbedVideo from "react-twitch-embed-video";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Container, Row, Col, Collapse,
   Navbar,
   NavbarToggler,
@@ -26,6 +26,8 @@ const Fade2 = styled.div`animation: 0.75s 0.25s ${keyframes`${fadeInDown}`}`;
 const Fade3 = styled.div`animation: 0.75s 0.5s ${keyframes`${fadeInDown}`}`;
 
 function App({ match, location }) {
+
+  const history = useHistory();
 
   const [visible, setVisible] = useState(false);
 
@@ -141,6 +143,8 @@ function App({ match, location }) {
       .then((data) => {
         console.log(data)
         game_id = data.data[0].id;
+      }).catch(function(error) {
+        history.push('/')
       })
   
     do {
