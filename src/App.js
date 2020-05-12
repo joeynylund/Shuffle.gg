@@ -15,19 +15,20 @@ import { Container, Row, Col, Collapse,
   Input } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import Spinner from 'react-spinkit';
 import ReactGA from 'react-ga';
 
 function App({location}) {
+
+  const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState('');
 
   const [searchResults, setSearchReults] = useState([]);
 
-  const [auth, setAuth] = useState(localStorage.getItem('auth') === 'true' ? 'true' : 'false')
+  const [auth, setAuth] = useState(localStorage.getItem('auth') === 'true' ? 'true' : 'false');
 
   const [games, setGames] = useState([]);
-
-  const [featured, setFeatured] = useState([]);
 
   const [visible, setVisible] = useState(false);
 
@@ -91,7 +92,11 @@ function App({location}) {
 
   async function loadGames() {
   
-    var token = ''
+    var token = '';
+
+    var cursor = '';
+
+    var gamesArray = [];
 
     var auth = await fetch('https://id.twitch.tv/oauth2/token?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&client_secret=ftkfalr4ztrnj1lpn1cgm61elygbxz&grant_type=client_credentials', {
       method: 'POST'
@@ -99,8 +104,8 @@ function App({location}) {
     .then((data) => {
       token = 'Bearer ' + data.access_token;
     })
-  
-      var load = await fetch('https://api.twitch.tv/helix/games/top?first=100', {
+      do {
+      var load = await fetch('https://api.twitch.tv/helix/games/top?first=100&after=' + cursor + '', {
       headers: {
         'Client-ID': 'jrhhhmgv1e73eq5qnswjqh2p3u1uqr',
         'Authorization': token,
@@ -110,21 +115,34 @@ function App({location}) {
         let i = 0
         data.data.forEach(game => {
           let newImagePath = game.box_art_url.replace('{width}', '271').replace('{height}', '328');
-          let animation = 'fadeIns 0.5s' + ' ' + i + 's'
+          let animation = 'fadeIns 0.5s' + ' ' + i + 's';
+          let gameName = game.name;
+          let displayName = game.name;
+          if(gameName.length > 25) {
+            gameName = gameName.slice(0,25) + '.....';
+          }
 
           let live = {
             id: game.id,
-            name: game.name,
+            display_name: game.name,
+            name: gameName,
             image: newImagePath,
             css: animation
           }
           i = i + 0.125
           setGames(oldArray => [...oldArray, live])
+          gamesArray.push(live)
         })
+        setLoading(false)
+        cursor = data.pagination.cursor
       })
+    } while(cursor !== undefined)
 
       sessionStorage.removeItem('streams')
+      sessionStorage.removeItem('streamsArray')
       sessionStorage.removeItem('time')
+
+      
 
   }
 
@@ -151,7 +169,7 @@ function App({location}) {
 
           <Container>
             
-            {games.length > 1 ? <div><Row style={{justifyContent:"center"}}>
+            {loading === false ? <div><Row style={{justifyContent:"center"}}>
 
               <h1 style={{fontWeight:"bold", fontFamily:"Poppins", color:"#21FF8A", padding:"0px 10px", animation:"fadeIns 0.5s 0s"}} className="animate">Let's find something to watch.</h1>
 
@@ -171,13 +189,11 @@ function App({location}) {
               <Input style={{animation:"fadeIns 0.5s 0.25s"}} className="animate" type="text" value={search} onChange={(e) => {
                 setSearch(e.target.value);
                 setSearchReults([])
-                if (search.length > 0) {
                 setSearchReults(games)
                   const test = games.filter(gun => {
                     return gun.name.toLowerCase().includes(e.target.value.toLowerCase())
                   });
                 setSearchReults(test)
-                }
 
     
 
@@ -190,9 +206,9 @@ function App({location}) {
             <Row>
 
             {search.length > 0 ? searchResults.slice(0,12).map(result => (
-              <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} key={result.name}>
+              <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover" key={result.name}>
               <Link to={{
-            pathname: "/game/" + result.name,
+            pathname: "/game/" + result.display_name,
           }}>
               <img src={result.image} alt={result.name + " Box Art"} style={{borderRadius: "15px", width:"100%", height:"calc(100% - 30px)"}} className="hover2" />
               <h6 style={{textAlign:"left", fontFamily:"Poppins", marginTop:"5px", marginBottom:"20px"}}>{result.name}</h6>
@@ -202,7 +218,7 @@ function App({location}) {
                 
                   <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover" key={game.name}>
                     <Link to={{
-                  pathname: "/game/" + game.name,
+                  pathname: "/game/" + game.display_name,
                 }}>
                     <img src={game.image} alt={game.name + " Box Art"} style={{borderRadius: "15px", width:"100%", height:"calc(100% - 30px)", animation: game.css}} className="animate hover2" />
                     <h6 style={{textAlign:"left", fontFamily:"Poppins", marginTop:"5px", marginBottom:"20px", animation: game.css}} className="animate">{game.name}</h6>
@@ -214,7 +230,7 @@ function App({location}) {
 
             </Row>
             
-            </div> : <div></div>}
+            </div> : <div><h2 style={{fontFamily:"Poppins"}}>Loading games...</h2><Spinner name="ball-pulse-sync" color="#22FF8A" /></div>}
 
           </Container>
 
