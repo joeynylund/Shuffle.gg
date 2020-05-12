@@ -20,6 +20,8 @@ import ReactGA from 'react-ga';
 
 function App({location}) {
 
+  var gamesArray = [];
+
   const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState('');
@@ -96,8 +98,6 @@ function App({location}) {
 
     var cursor = '';
 
-    var gamesArray = [];
-
     var auth = await fetch('https://id.twitch.tv/oauth2/token?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&client_secret=ftkfalr4ztrnj1lpn1cgm61elygbxz&grant_type=client_credentials', {
       method: 'POST'
     }).then((response) => response.json())
@@ -137,6 +137,8 @@ function App({location}) {
         cursor = data.pagination.cursor
       })
     } while(cursor !== undefined)
+
+      console.log(gamesArray)
 
       sessionStorage.removeItem('streams')
       sessionStorage.removeItem('streamsArray')
@@ -188,12 +190,11 @@ function App({location}) {
               
               <Input style={{animation:"fadeIns 0.5s 0.25s"}} className="animate" type="text" value={search} onChange={(e) => {
                 setSearch(e.target.value);
-                setSearchReults([])
-                setSearchReults(games)
+                setSearchReults('')
                   const test = games.filter(gun => {
                     return gun.name.toLowerCase().includes(e.target.value.toLowerCase())
                   });
-                setSearchReults(test)
+                setSearchReults([...new Set(test)])
 
     
 
@@ -205,8 +206,8 @@ function App({location}) {
 
             <Row>
 
-            {search.length > 0 ? searchResults.slice(0,12).map(result => (
-              <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover" key={result.name}>
+            {search.length > 0 ? searchResults.slice(0,12).map((result, index) => (
+              <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover" key={index}>
               <Link to={{
             pathname: "/game/" + result.display_name,
           }}>
