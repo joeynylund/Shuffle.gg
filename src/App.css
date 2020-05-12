@@ -237,3 +237,26 @@ a:hover {
     max-width: 1740px!important;
   }
 }
+
+.form-control {
+  background: transparent;
+  border-bottom: 2px solid #22FF8A;
+  border-right: none;
+  border-left: none;
+  border-top: none;
+  color: #fff;
+  border-radius: 0rem;
+  font-family: Poppins;
+}
+
+.form-control:focus {
+  color: #fff;
+  background-color: transparent;
+  box-shadow: none;
+  border-color: #22ff8a;
+}
+
+.form-control::placeholder {
+  color: #fff;
+  font-family: Poppins;
+}

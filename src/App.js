@@ -14,6 +14,7 @@ import { Container, Row, Col, Collapse,
   Alert,
   Input } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import ReactGA from 'react-ga';
 
 function App({location}) {
@@ -163,6 +164,9 @@ function App({location}) {
             </Row>
 
             <Row style={{paddingBottom:"30px"}}>
+
+            <Col xs={{ size: 12, offset: 0 }} sm={{ size: 12, offset: 0 }} md={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }} xl={{ size: 6, offset: 3 }}>
+
               
               <Input style={{animation:"fadeIns 0.5s 0.25s"}} className="animate" type="text" value={search} onChange={(e) => {
                 setSearch(e.target.value);
@@ -178,12 +182,14 @@ function App({location}) {
     
 
     }} placeholder="Search for a game..." />
+
+    </Col>
               
             </Row>
 
             <Row>
 
-            {search.length > 0 ? search.length > 0 ? searchResults.slice(0,12).map(result => (
+            {search.length > 0 ? searchResults.slice(0,12).map(result => (
               <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} key={result.name}>
               <Link to={{
             pathname: "/game/" + result.name,
@@ -192,7 +198,7 @@ function App({location}) {
               <h6 style={{textAlign:"left", fontFamily:"Poppins", marginTop:"5px", marginBottom:"20px"}}>{result.name}</h6>
               </Link>
             </Col>
-            )) : <p>Keep typing</p> : games.slice(0,12).map(game => (
+            )) : games.slice(0,12).map(game => (
                 
                   <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover" key={game.name}>
                     <Link to={{
