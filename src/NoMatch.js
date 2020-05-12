@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { Link } from 'react-router-dom';
 import { Container, Row, Col, Collapse,
   Navbar,
   NavbarToggler,
@@ -12,10 +11,8 @@ import { Container, Row, Col, Collapse,
   DropdownItem,
   NavbarText,
   Alert } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import Spinner from 'react-spinkit';
 import ReactGA from 'react-ga';
+import Footer from './Footer';
 
 function App() {
 
@@ -117,6 +114,8 @@ function App() {
           </Container>
 
         </header>
+
+        <Footer />
 
     </div>
 

@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-spinkit';
 import ReactGA from 'react-ga';
+import Footer from './Footer';
 
 function App({location}) {
 
@@ -236,6 +237,8 @@ function App({location}) {
           </Container>
 
         </header>
+
+        <Footer />
 
     </div>
 

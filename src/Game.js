@@ -18,6 +18,7 @@ import { faRandom, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import styled, { keyframes } from 'styled-components';
 import { fadeInDown } from 'react-animations';
 import ReactGA from 'react-ga';
+import Footer from './Footer';
 
 const Fade = styled.div`animation: 0.75s ${keyframes`${fadeInDown}`}`;
 
@@ -373,6 +374,8 @@ function App({ match, location }) {
           </Container>
 
         </header>
+
+        <Footer />
 
     </div>
 
