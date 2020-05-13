@@ -147,13 +147,11 @@ function App({location}) {
 
       console.log(gamesArray)
 
-      localStorage.setItem('games' ,JSON.stringify('games'))
+      localStorage.setItem('games' ,JSON.stringify(gamesArray))
 
       sessionStorage.removeItem('streams')
       sessionStorage.removeItem('streamsArray')
       sessionStorage.removeItem('time')
-
-      
 
   }
 
@@ -162,14 +160,13 @@ function App({location}) {
     ReactGA.initialize('UA-165630956-1');
     ReactGA.pageview(window.location.pathname);
 
-    console.log(localStorage.getItem('games').length)
-
-    if(localStorage.getItem('games').length <= 0) {
+    if(localStorage.getItem('games') === null) {
       loadGames()
     } else {
       setLoading(false)
       setGames(JSON.parse(localStorage.getItem('games')))
-      console.log(localStorage.getItem('games').length)
+      sessionStorage.removeItem('streamsArray')
+      sessionStorage.removeItem('time')
     }
 
     
