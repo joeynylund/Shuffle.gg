@@ -26,24 +26,32 @@ function App({location}) {
 
   const [loading, setLoading] = useState(true);
 
+  const [searchLoading, setSearchLoading] = useState(true);
+
   const [search, setSearch] = useState('');
 
   const [searchResults, setSearchReults] = useState([]);
 
   const [auth, setAuth] = useState(localStorage.getItem('auth') === 'true' ? 'true' : 'false');
 
+  const [featured, setFeatured] = useState([]);
+
   const [games, setGames] = useState([]);
 
-  const [visible, setVisible] = useState(false);
-
-  const onDismiss = () => setVisible(false);
-
   const NavBar2 = () => {
+
+    const [visible, setVisible] = useState(false);
+
+    const onDismiss = () => setVisible(false);
 
     const [isOpen, setIsOpen] = useState(false);
 
     return (
       <div>
+
+        <Alert color="danger" isOpen={visible} toggle={onDismiss}>
+          Hmmm that didn't work. Try logging in again!
+        </Alert>
         <Navbar color="dark" dark expand="md">
         <NavbarBrand href="/"><img src="./shuffle-logo.png" alt="Shuffle.gg Logo" width="200px" /></NavbarBrand>
           <NavbarToggler onClick={(e) => setIsOpen(!isOpen)} />
@@ -111,6 +119,36 @@ function App({location}) {
     .then((data) => {
       token = 'Bearer ' + data.access_token;
     })
+    var load2 = await fetch('https://api.twitch.tv/helix/games/top?first=12', {
+      headers: {
+        'Client-ID': 'jrhhhmgv1e73eq5qnswjqh2p3u1uqr',
+        'Authorization': token,
+      }
+      }).then((response) => response.json())
+      .then((data) => {
+        let i = 0
+        data.data.forEach(game => {
+          let newImagePath = game.box_art_url.replace('{width}', '271').replace('{height}', '328');
+          let animation = 'fadeIns 0.5s' + ' ' + i + 's';
+          let gameName = game.name;
+          let displayName = game.name;
+          if(gameName.length > 25) {
+            gameName = gameName.slice(0,25) + '.....';
+          }
+
+          let live = {
+            id: game.id,
+            display_name: game.name,
+            name: gameName,
+            image: newImagePath,
+            css: animation
+          }
+          i = i + 0.125
+          setFeatured(oldArray => [...oldArray, live])
+          
+        })
+        setLoading(false)
+      })
       do {
       var load = await fetch('https://api.twitch.tv/helix/games/top?first=100&after=' + cursor + '', {
       headers: {
@@ -137,15 +175,17 @@ function App({location}) {
             css: animation
           }
           i = i + 0.125
-          setGames(oldArray => [...oldArray, live])
           gamesArray.push(live)
+          
         })
-        setLoading(false)
         cursor = data.pagination.cursor
       })
     } while(cursor !== undefined)
 
       console.log(gamesArray)
+
+      setGames(gamesArray)
+      setSearchLoading(false)
 
       localStorage.setItem('games' ,JSON.stringify(gamesArray))
 
@@ -164,7 +204,10 @@ function App({location}) {
       loadGames()
     } else {
       setLoading(false)
-      setGames(JSON.parse(localStorage.getItem('games')))
+      setSearchLoading(false)
+      var cachedGames = JSON.parse(localStorage.getItem('games'))
+      setFeatured(cachedGames.slice(0,12))
+      setGames(cachedGames)
       sessionStorage.removeItem('streamsArray')
       sessionStorage.removeItem('time')
     }
@@ -176,10 +219,6 @@ function App({location}) {
   return (
 
     <div className="App">
-
-      <Alert color="danger" isOpen={visible} toggle={onDismiss}>
-        Hmmm that didn't work. Try logging in again!
-      </Alert>
 
       <NavBar2 />
         
@@ -204,7 +243,7 @@ function App({location}) {
             <Col xs={{ size: 12, offset: 0 }} sm={{ size: 12, offset: 0 }} md={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }} xl={{ size: 6, offset: 3 }}>
 
               
-              <Input style={{animation:"fadeIns 0.5s 0.25s"}} className="animate" type="text" value={search} onChange={(e) => {
+              {searchLoading === true ? <div><h6 style={{fontFamily:"Poppins"}}>Loading search...</h6><Spinner name="ball-pulse-sync" color="#22FF8A" /></div> : <Input style={{animation:"fadeIns 0.5s 0.25s"}} className="animate" type="text" value={search} onChange={(e) => {
                 setSearch(e.target.value);
                 setSearchReults('')
                   const test = games.filter(gun => {
@@ -214,7 +253,7 @@ function App({location}) {
 
     
 
-    }} placeholder="Search for a game..." />
+    }} placeholder="Search for a game..." />}
 
     </Col>
               
@@ -231,7 +270,7 @@ function App({location}) {
               <h6 style={{textAlign:"left", fontFamily:"Poppins", marginTop:"5px", marginBottom:"20px"}}>{result.name}</h6>
               </Link>
             </Col>
-            )) : games.slice(0,12).map(game => (
+            )) : featured.map(game => (
                 
                   <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover" key={game.name}>
                     <Link to={{

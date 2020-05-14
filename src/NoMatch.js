@@ -19,16 +19,16 @@ function App() {
 
   const [auth, setAuth] = useState(localStorage.getItem('auth') === 'true' ? 'true' : 'false');
 
-  const [visible, setVisible] = useState(false);
+  const NavBar2 = () => {
+
+    const [visible, setVisible] = useState(false);
 
   const onDismiss = () => setVisible(false);
-
-  const NavBar2 = () => {
 
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-      <div>
+
         <Navbar color="dark" dark expand="md">
         <NavbarBrand href="/"><img src="./shuffle-logo.png" alt="Shuffle.gg Logo" width="200px" /></NavbarBrand>
           <NavbarToggler onClick={(e) => setIsOpen(!isOpen)} />
@@ -71,7 +71,6 @@ function App() {
                         if (localStorage.getItem('display_name') != null) {
                         } else {
                           setAuth('false')
-                          setVisible(true)
                         }
                     }
                     
@@ -80,7 +79,6 @@ function App() {
             
           </Collapse>
         </Navbar>
-      </div>
     );
   }
 
@@ -94,10 +92,6 @@ function App() {
   return (
 
     <div className="App">
-
-      <Alert color="danger" isOpen={visible} toggle={onDismiss}>
-        Hmmm that didn't work. Try logging in again!
-      </Alert>
 
       <NavBar2 />
         

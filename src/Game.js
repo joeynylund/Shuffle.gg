@@ -58,8 +58,6 @@ function App({ match, location }) {
 
   var token = ''
 
-  const [isOpen, setIsOpen] = useState(false);
-
   const NavBar2 = () => {
 
     const [isOpen, setIsOpen] = useState(false);
@@ -283,8 +281,7 @@ function App({ match, location }) {
       "'Nobody puts this next streamer in a corner.' - Dirty Dancing",
       "'Just keep shuffling.' - Finding Nemo",
       "'Thank you, next stream' - Ariana Grande",
-      "'My mama always said shuffle was like a box of chocolates. You never know what stream you're gonna get.' - Forrest Gump",
-      "'I am your father.' - Star Wars",
+      "'My mama always said shuffle was like a box of chocolates. You never know what stream you're gonna get.' - Forrest Gump"
     ]
 
     var randomQuote = quotes[Math.floor(Math.random()*quotes.length)];
