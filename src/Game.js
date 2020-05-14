@@ -28,6 +28,8 @@ const Fade3 = styled.div`animation: 0.75s 0.5s ${keyframes`${fadeInDown}`}`;
 
 function App({ match, location }) {
 
+  const [loading, setLoading] = useState(true)
+
   const history = useHistory();
 
   const [visible, setVisible] = useState(false);
@@ -135,10 +137,8 @@ function App({ match, location }) {
 
     if(match.params.game.includes('&') === true) {
       gameName = match.params.game.replace('&', '%26');
-      console.log(gameName)
     } else {
       gameName = match.params.game;
-      console.log(gameName)
     }
 
     var getGame = await fetch('https://api.twitch.tv/helix/games?name=' + gameName + '', {
@@ -148,7 +148,6 @@ function App({ match, location }) {
       }
       }).then((response) => response.json())
       .then((data) => {
-        console.log(data)
         game_id = data.data[0].id;
       }).catch(function(error) {
         history.push('/')
@@ -200,6 +199,8 @@ function App({ match, location }) {
 
     setTitle(randomStream.title)
 
+    setLoading(false)
+
   }
 
   async function loadFromCache() {
@@ -228,6 +229,8 @@ function App({ match, location }) {
       })
 
     setTitle(randomStream.title)
+
+    setLoading(false)
 
   }
 
@@ -374,7 +377,7 @@ function App({ match, location }) {
 
               </Row>
               
-              <Fade><div className="fade3"><ReactTwitchEmbedVideo theme="dark" width="100%" height={height} channel={channel} /></div></Fade> </div>
+              <Fade><div className="fade3">{loading === true ? <div></div> : <ReactTwitchEmbedVideo theme="dark" width="100%" height={height} channel={channel} />}</div></Fade> </div>
             }  
 
           </Container>
