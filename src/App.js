@@ -19,6 +19,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faDiscord } from '@fortawesome/free-brands-svg-icons';
 import Spinner from 'react-spinkit';
 import ReactGA from 'react-ga';
+require('dotenv').config()
 
 function App({location}) {
 
@@ -113,7 +114,7 @@ function App({location}) {
 
     var cursor = '';
 
-    var auth = await fetch('https://id.twitch.tv/oauth2/token?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&client_secret=ftkfalr4ztrnj1lpn1cgm61elygbxz&grant_type=client_credentials', {
+    var auth = await fetch('https://id.twitch.tv/oauth2/token?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&client_secret=' + process.env.REACT_APP_TWITCH_SECRET + '&grant_type=client_credentials', {
       method: 'POST'
     }).then((response) => response.json())
     .then((data) => {
