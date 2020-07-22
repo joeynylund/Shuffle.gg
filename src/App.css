@@ -2,6 +2,8 @@
   text-align: center;
   background-image: url("./topography3.jpg");
   background-size: cover;
+  color: #FFF;
+  height: 100vh;
 }
 
 .App-logo {
@@ -263,4 +265,67 @@ a:hover {
 
 .footer {
   background-color: #121212!important;
+}
+
+.modal-backdrop {
+  background-color: rgba(0,0,0,0.9)!important;
+}
+
+.modal-content {
+  background-color: #121212;
+  color: #FFF;
+  font-family: 'Poppins';
+}
+
+.modal-header {
+  border-color: #22FF8A;
+}
+
+.modal-footer {
+  border: none;
+}
+
+.close {
+  color: #FFF;
+}
+
+option {
+  background-color: #121212;
+}
+
+input[type=range].range-slider::-webkit-slider-thumb {
+  background: #22FF8A!important;
+}
+
+input[type=range].range-slider::-webkit-slider-runnable-track {
+  box-sizing: border-box;
+  border: none;
+  height: 4px;
+  background: #414141!important;
+  border-radius: 2px;
+}
+input[type=range].range-slider::-moz-range-track {
+  box-sizing: border-box;
+  border: none;
+  height: 4px;
+  background: #414141;
+  border-radius: 2px;
+}
+input[type=range].range-slider::-ms-track {
+  box-sizing: border-box;
+  border: none;
+  height: 4px;
+  background: #414141;
+  border-radius: 2px;
+}
+input[type=range].range-slider::-ms-fill-lower {
+  box-sizing: border-box;
+  border: none;
+  height: 4px;
+  background: #414141;
+  border-radius: 2px;
+}
+
+input[type=range].range-slider:not(.disabled):focus::-webkit-slider-thumb {
+  box-shadow: 0 0 0 0.2rem #22FF8A40!important;
 }

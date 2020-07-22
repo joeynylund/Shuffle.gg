@@ -14,7 +14,7 @@ import { Container, Row, Col, Collapse,
   DropdownItem,
   NavbarText, Alert } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRandom, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faRandom, faAngleLeft, faCog } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faDiscord } from '@fortawesome/free-brands-svg-icons';
 import styled, { keyframes } from 'styled-components';
 import { fadeInDown } from 'react-animations';
@@ -28,7 +28,9 @@ const Fade3 = styled.div`animation: 0.75s 0.5s ${keyframes`${fadeInDown}`}`;
 
 function App({ match, location }) {
 
-  const [loading, setLoading] = useState(true)
+  const [empty, setEmpty] = useState(false);
+
+  const [loading, setLoading] = useState(true);
 
   const history = useHistory();
 
@@ -36,15 +38,17 @@ function App({ match, location }) {
 
   const onDismiss = () => setVisible(false);
 
-  const [auth, setAuth] = useState(localStorage.getItem('auth') === 'true' ? 'true' : 'false')
+  const [auth, setAuth] = useState(localStorage.getItem('auth') === 'true' ? 'true' : 'false');
 
   const [height, setHeight] = useState('433px');
   
-  const [channel, setChannel] = useState('')
+  const [channel, setChannel] = useState('');
 
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState('');
 
-  const [logo, setLogo] = useState('')
+  const [logo, setLogo] = useState('');
+
+  const [otherGames, setOtherGames] = useState([]);
 
   var randomStream = {}
 
@@ -64,41 +68,41 @@ function App({ match, location }) {
 
     return (
       <div>
-        <Navbar color="dark" dark expand="md">
-        <NavbarBrand href="/"><img src="../shuffle-logo.png" alt="Shuffle.gg Logo" width="200px" /></NavbarBrand>
-          <NavbarToggler onClick={(e) => setIsOpen(!isOpen)} />
-          <Collapse isOpen={isOpen} navbar>
-            <Nav className="mr-auto" navbar>
-              
-            </Nav>
-            <NavbarText>
-              <a href="https://twitter.com/shufflegg" target="_blank"><FontAwesomeIcon icon={faTwitter} size="2x" style={{color:"#22FF8A",cursor:'pointer',marginRight:"15px"}} /></a>
-            </NavbarText>
-            <NavbarText>
-              <a href="https://discord.gg/bXAHTSx" target="_blank"><FontAwesomeIcon icon={faDiscord} size="2x" style={{color:"#22FF8A",cursor:'pointer'}} /></a>
-            </NavbarText>
-            {auth === 'true' ? <UncontrolledDropdown nav inNavbar style={{display:"block"}}>
-              <DropdownToggle nav caret>
-              <img src={localStorage.getItem("profile_image")} alt="Twitch User Logo" width="50px" height="50px" style={{borderRadius:"50%", display:"inline"}} /><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>{localStorage.getItem('display_name')}</h6>
-              </DropdownToggle>
-              <DropdownMenu right>
+
+      <Alert color="danger" isOpen={visible} toggle={onDismiss}>
+        Hmmm that didn't work. Try logging in again!
+      </Alert>
+      <Navbar color="dark" dark expand="md">
+      <NavbarBrand href="/"><img src="../shuffle-logo.png" alt="Shuffle.gg Logo" width="200px" /></NavbarBrand>
+        <NavbarToggler onClick={(e) => setIsOpen(!isOpen)} />
+        <Collapse isOpen={isOpen} navbar>
+          <Nav className="mr-auto" navbar>
+
+          </Nav>
+        
+          {auth === 'true' ? <UncontrolledDropdown nav inNavbar style={{display:"block"}}>
+            <DropdownToggle nav caret>
+            <img src={localStorage.getItem("profile_image")} alt="Twitch User Logo" width="50px" height="50px" style={{borderRadius:"50%", display:"inline"}} /><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>{localStorage.getItem('display_name')}</h6>
+            </DropdownToggle>
+            <DropdownMenu right>
               <DropdownItem onClick={(e) => {
-                  ReactGA.event({
-                    category: "Logged Out",
-                    action: "User logged out",
-                  });
-                  localStorage.clear();
-                  setAuth('false')
-                }}>Logout
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown> : <NavbarText style={{cursor:"pointer", color:"white", padding:"0.5rem 1rem", display:"block"}} onClick={(e) => {
                 ReactGA.event({
-                  category: "Logged In",
-                  action: "User logged in with Twitch",
+                  category: "Logged Out",
+                  action: "User logged out",
                 });
-                var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=https%3A%2F%2Fshuffle-gg.web.app%2Fauth&response_type=token")
-                var timer = setInterval(function() { 
+                localStorage.clear();
+                setAuth('false')
+              }}>
+                Logout
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown> : <NavbarText style={{ backgroundColor:"#212121", borderRadius:"10px", marginRight:"15px", cursor:"pointer", color:"white", padding:"0.5rem 1rem", display:"block"}} onClick={(e) => {
+            ReactGA.event({
+              category: "Logged In",
+              action: "User logged in with Twitch",
+            });
+              var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=https://www.shuffle.gg/auth&response_type=token")
+              var timer = setInterval(function() { 
                   if(newWindow.closed) {
                       clearInterval(timer);
                       setAuth('true');
@@ -110,15 +114,19 @@ function App({ match, location }) {
                   }
                   
               }, 1000);
-              }}><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>Login with Twitch</h6></NavbarText> }
-            
-          </Collapse>
-        </Navbar>
-      </div>
+            }}><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>Login with Twitch</h6></NavbarText> }
+            <NavbarText>
+            <FontAwesomeIcon icon={faCog} size="2x" style={{color:"#22FF8A",cursor:'pointer'}} />
+          </NavbarText>
+        </Collapse>
+      </Navbar>
+    </div>
     );
   }
 
   async function loadStreams() {
+
+    var shuffledGames = [];
 
     var auth = await fetch('https://id.twitch.tv/oauth2/token?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&client_secret=ftkfalr4ztrnj1lpn1cgm61elygbxz&grant_type=client_credentials', {
       method: 'POST'
@@ -160,7 +168,7 @@ function App({ match, location }) {
       }).then((response) => response.json())
       .then((data) => {
         data.data.forEach(stream => {
-          if(stream.viewer_count <= 50) {
+          if(stream.viewer_count <= 25) {
             let live = { 
               user_id: stream.user_id,
               user_name: stream.user_name, 
@@ -173,17 +181,39 @@ function App({ match, location }) {
       })
     } while(cursor !== undefined)
 
-    cachedTime = time.setMinutes(time.getMinutes() + 5)
+    if (streams.length === 0) {
 
-    sessionStorage.removeItem('time')
+      setLoading(false)
 
-    sessionStorage.setItem('time', cachedTime)
+      setEmpty(true)
 
-    sessionStorage.setItem('streamsArray', JSON.stringify(streams))
+      var cachedGames = JSON.parse(localStorage.getItem('games'))
 
-    randomStream = streams[Math.floor(Math.random()*streams.length)];
+      var n;
 
-    setChannel(randomStream.user_name)
+      for (n=1; n <= 12; n++) {
+        var i = Math.floor(Math.random()*cachedGames.length)
+        shuffledGames.push(cachedGames[i])
+      }
+
+      setOtherGames(shuffledGames)
+
+    } else {
+
+      cachedTime = time.setMinutes(time.getMinutes() + 5)
+
+      sessionStorage.removeItem('time')
+  
+      sessionStorage.setItem('time', cachedTime)
+  
+      sessionStorage.setItem('streamsArray', JSON.stringify(streams))
+
+      randomStream = streams[Math.floor(Math.random()*streams.length)];
+
+      setChannel(randomStream.user_name)
+    }
+
+    
 
     var image = await fetch('https://api.twitch.tv/helix/users?login=' + randomStream.user_name + '', {
       headers: {
@@ -330,10 +360,6 @@ function App({ match, location }) {
 
     <div className="App">
 
-      <Alert color="danger" isOpen={visible} toggle={onDismiss}>
-        Hmmm that didn't work. Try logging in again!
-      </Alert>
-
       <NavBar2 />
         
         <header className="App-header">
@@ -341,14 +367,23 @@ function App({ match, location }) {
           <Container>
 
               { 
-                channel === '' ? <div><h2 style={{fontFamily:"Poppins"}}>{quote()}</h2><Spinner name="ball-pulse-sync" color="#22FF8A" /></div> : 
+                empty === true ? <div><h1>Nobody is currently streaming <span style={{textDecoration:"underline #22FF8A", fontFamily:"Poppins"}}>{match.params.game}</span>!</h1><h6 style={{marginBottom:"1rem", fontFamily:"Poppins", color:"#22FF8A"}}>Check out these other games</h6><Row>{otherGames.map(game => (
+                  <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover" onClick={() => {
+                    window.location.replace("/game/" + game.display_name);
+                  }} key={game.name}>
+                  
+                    <img src={game.image} alt={game.name + " Box Art"} style={{borderRadius: "15px", width:"100%", height:"calc(100% - 30px)", animation: 'fadeIns 0.5s 0.25s'}} className="animate hover2" />
+                    <h6 style={{textAlign:"left", fontFamily:"Poppins", marginTop:"5px", marginBottom:"20px", animation: 'fadeIns 0.5s 0.25s'}} className="animate">{game.name}</h6>
+                  </Col>
+
+              ))} </Row></div> : channel === '' ? <div><h2 style={{fontFamily:"Poppins"}}>{quote()}</h2><Spinner name="ball-pulse-sync" color="#22FF8A" /></div> : 
               <div>
 
               <Row>
 
                 <h2 style={{fontFamily:"Poppins", marginBottom:"10px", paddingLeft:"15px"}}><Link to={{
                   pathname: "/",
-                }}><FontAwesomeIcon icon={faAngleLeft} style={{color:"#22FF8A",cursor:'pointer'}} /></Link> {match.params.game}</h2>
+                }}><FontAwesomeIcon icon={faAngleLeft} style={{color:"#22FF8A",cursor:'pointer'}} /></Link> <span style={{textDecoration:"underline #22FF8A"}}>{match.params.game}</span></h2>
 
               </Row> 
               <Row style={{marginBottom:"10px"}}>
@@ -380,6 +415,18 @@ function App({ match, location }) {
           </Container>
 
         </header>
+
+        <div className="footer" style={{padding:"20px 0px", backgroundColor:"#121212"}}>
+
+            <Container>
+              <p style={{display:"inline", float:"left"}}> &copy; 2020 Shuffle.GG</p>
+              <div style={{float:"right"}}>
+              <a href="https://twitter.com/shufflegg" target="_blank"><FontAwesomeIcon icon={faTwitter} size="2x" style={{color:"#22FF8A",cursor:'pointer',marginRight:"15px", marginBottom:"1rem"}} /></a>
+              <a href="https://discord.gg/bXAHTSx" target="_blank"><FontAwesomeIcon icon={faDiscord} size="2x" style={{color:"#22FF8A",cursor:'pointer',marginBottom:"1rem"}} /></a>
+              </div>
+            </Container>
+
+          </div>
 
     </div>
 

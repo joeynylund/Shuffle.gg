@@ -20,6 +20,7 @@
     "history": "^4.10.1",
     "react": "^16.13.1",
     "react-animations": "^1.0.0",
+    "react-bootstrap-range-slider": "^1.1.2",
     "react-dom": "^16.13.1",
     "react-fontawesome": "^1.7.1",
     "react-ga": "^2.7.0",
@@ -27,6 +28,7 @@
     "react-scripts": "3.4.1",
     "react-spinkit": "^3.0.0",
     "react-twitch-embed-video": "^2.0.2",
+    "reactrangeslider": "^3.0.6",
     "reactstrap": "^8.4.1",
     "styled-components": "^5.1.0"
   },

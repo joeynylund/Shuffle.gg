@@ -12,18 +12,33 @@ import { Container, Row, Col, Collapse,
   DropdownItem,
   NavbarText,
   Alert,
-  Input, 
-  NavItem} from 'reactstrap';
+  Input,
+  Button,
+  Modal, 
+  ModalHeader, 
+  ModalBody,
+  ModalFooter,
+  Form, FormGroup, Label } from 'reactstrap';
+import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
+import  RangeSlider  from 'react-bootstrap-range-slider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faRandom, faCog } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faDiscord } from '@fortawesome/free-brands-svg-icons';
 import Spinner from 'react-spinkit';
 import ReactGA from 'react-ga';
 require('dotenv').config()
 
-function App({location}) {
+function App() {
+
+  const [ value, setValue ] = useState(25);
+
+  const [modal, setModal] = useState(false);
+
+  const toggle = () => setModal(!modal);
 
   var gamesArray = [];
+
+  var shuffledGames = [];
 
   const [loading, setLoading] = useState(true);
 
@@ -37,22 +52,21 @@ function App({location}) {
 
   const [featured, setFeatured] = useState([]);
 
+  const [shuffled, setShuffled] = useState([]);
+
   const [games, setGames] = useState([]);
 
-  const NavBar2 = () => {
-
-    const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
 
     const onDismiss = () => setVisible(false);
+
+  const NavBar2 = () => {
 
     const [isOpen, setIsOpen] = useState(false);
 
     return (
       <div>
 
-        <Alert color="danger" isOpen={visible} toggle={onDismiss}>
-          Hmmm that didn't work. Try logging in again!
-        </Alert>
         <Navbar color="dark" dark expand="md">
         <NavbarBrand href="/"><img src="./shuffle-logo.png" alt="Shuffle.gg Logo" width="200px" /></NavbarBrand>
           <NavbarToggler onClick={(e) => setIsOpen(!isOpen)} />
@@ -60,12 +74,7 @@ function App({location}) {
             <Nav className="mr-auto" navbar>
 
             </Nav>
-            <NavbarText>
-              <a href="https://twitter.com/shufflegg" target="_blank"><FontAwesomeIcon icon={faTwitter} size="2x" style={{color:"#22FF8A",cursor:'pointer',marginRight:"15px"}} /></a>
-            </NavbarText>
-            <NavbarText>
-              <a href="https://discord.gg/bXAHTSx" target="_blank"><FontAwesomeIcon icon={faDiscord} size="2x" style={{color:"#22FF8A",cursor:'pointer'}} /></a>
-            </NavbarText>
+          
             {auth === 'true' ? <UncontrolledDropdown nav inNavbar style={{display:"block"}}>
               <DropdownToggle nav caret>
               <img src={localStorage.getItem("profile_image")} alt="Twitch User Logo" width="50px" height="50px" style={{borderRadius:"50%", display:"inline"}} /><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>{localStorage.getItem('display_name')}</h6>
@@ -82,12 +91,12 @@ function App({location}) {
                   Logout
                 </DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown> : <NavbarText style={{cursor:"pointer", color:"white", padding:"0.5rem 1rem", display:"block"}} onClick={(e) => {
+            </UncontrolledDropdown> : <NavbarText style={{ backgroundColor:"#212121", borderRadius:"10px", marginRight:"15px", cursor:"pointer", color:"white", padding:"0.5rem 1rem", display:"block"}} onClick={(e) => {
               ReactGA.event({
                 category: "Logged In",
                 action: "User logged in with Twitch",
               });
-                var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=https://shuffle-gg.web.app/auth&response_type=token")
+                var newWindow = window.open("https://id.twitch.tv/oauth2/authorize?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&redirect_uri=https://www.shuffle.gg/auth&response_type=token")
                 var timer = setInterval(function() { 
                     if(newWindow.closed) {
                         clearInterval(timer);
@@ -101,11 +110,28 @@ function App({location}) {
                     
                 }, 1000);
               }}><h6 style={{color:"#fff", fontFamily:"Poppins", display:"inline", paddingLeft:"15px", paddingRight:"10px"}}>Login with Twitch</h6></NavbarText> }
-            
+              <NavbarText>
+              <FontAwesomeIcon icon={faCog} size="2x" onClick={toggle} style={{color:"#22FF8A",cursor:'pointer'}} />
+            </NavbarText>
           </Collapse>
         </Navbar>
       </div>
     );
+  }
+
+  function shuffleGames() {
+
+    var cachedGames = JSON.parse(localStorage.getItem('games'))
+
+    var n;
+
+    for (n=1; n <= 6; n++) {
+      var i = Math.floor(Math.random()*cachedGames.length)
+      shuffledGames.push(cachedGames[i])
+    }
+
+    setShuffled(shuffledGames)
+
   }
 
   async function loadGames() {
@@ -114,13 +140,13 @@ function App({location}) {
 
     var cursor = '';
 
-    var auth = await fetch('https://id.twitch.tv/oauth2/token?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&client_secret=' + process.env.REACT_APP_TWITCH_SECRET + '&grant_type=client_credentials', {
+    await fetch('https://id.twitch.tv/oauth2/token?client_id=jrhhhmgv1e73eq5qnswjqh2p3u1uqr&client_secret=' + process.env.REACT_APP_TWITCH_SECRET + '&grant_type=client_credentials', {
       method: 'POST'
     }).then((response) => response.json())
     .then((data) => {
       token = 'Bearer ' + data.access_token;
     })
-    var load2 = await fetch('https://api.twitch.tv/helix/games/top?first=12', {
+    await fetch('https://api.twitch.tv/helix/games/top?first=6', {
       headers: {
         'Client-ID': 'jrhhhmgv1e73eq5qnswjqh2p3u1uqr',
         'Authorization': token,
@@ -148,7 +174,7 @@ function App({location}) {
           setFeatured(oldArray => [...oldArray, live])
           
         })
-        setLoading(false)
+        
       })
       do {
       var load = await fetch('https://api.twitch.tv/helix/games/top?first=100&after=' + cursor + '', {
@@ -183,9 +209,17 @@ function App({location}) {
       })
     } while(cursor !== undefined)
 
-      console.log(gamesArray)
+      var n;
+
+      for (n=1; n <= 6; n++) {
+        var i = Math.floor(Math.random()*gamesArray.length)
+        shuffledGames.push(gamesArray[i])
+      }
+
+      setShuffled(shuffledGames)
 
       setGames(gamesArray)
+      setLoading(false)
       setSearchLoading(false)
 
       localStorage.setItem('games' ,JSON.stringify(gamesArray))
@@ -207,8 +241,16 @@ function App({location}) {
       setLoading(false)
       setSearchLoading(false)
       var cachedGames = JSON.parse(localStorage.getItem('games'))
-      setFeatured(cachedGames.slice(0,12))
+      setFeatured(cachedGames.slice(0,6))
       setGames(cachedGames)
+      var n;
+
+      for (n=1; n <= 6; n++) {
+        var i = Math.floor(Math.random()*cachedGames.length)
+        shuffledGames.push(cachedGames[i])
+      }
+
+      setShuffled(shuffledGames)
       sessionStorage.removeItem('streamsArray')
       sessionStorage.removeItem('time')
     }
@@ -221,9 +263,11 @@ function App({location}) {
 
     <div className="App">
 
+        <Alert color="danger" isOpen={visible} toggle={onDismiss}>
+          Hmmm that didn't work. Try logging in again!
+        </Alert>
+
       <NavBar2 />
-        
-        <header className="App-header">
 
           <Container>
             
@@ -259,10 +303,9 @@ function App({location}) {
     </Col>
               
             </Row>
+            
 
-            <Row>
-
-            {search.length > 0 ? searchResults.slice(0,12).map((result, index) => (
+            {search.length > 0 ? <div><Row><h3 style={{fontFamily:"Poppins", marginBottom:"1rem", animation:"fadeIns 0.5s 0.25s"}} className="animate">Search Results</h3></Row><Row> {searchResults.slice(0,12).map((result, index) => (
               <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover" key={index}>
               <Link to={{
             pathname: "/game/" + result.display_name,
@@ -271,8 +314,7 @@ function App({location}) {
               <h6 style={{textAlign:"left", fontFamily:"Poppins", marginTop:"5px", marginBottom:"20px"}}>{result.name}</h6>
               </Link>
             </Col>
-            )) : featured.map(game => (
-                
+            ))} </Row></div> : <div><Row style={{margin:'0'}}><h3 style={{fontFamily:"Poppins", marginBottom:"1rem", animation:"fadeIns 0.5s 0.25s", textDecoration:"underline #22FF8A"}} className="animate">Top Games</h3></Row><Row>{featured.map(game => (
                   <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover" key={game.name}>
                     <Link to={{
                   pathname: "/game/" + game.display_name,
@@ -281,19 +323,70 @@ function App({location}) {
                     <h6 style={{textAlign:"left", fontFamily:"Poppins", marginTop:"5px", marginBottom:"20px", animation: game.css}} className="animate">{game.name}</h6>
                     </Link>
                   </Col>
-                
 
-              ))}
+              ))} </Row>
+              <Row><Col md="12"><h3 style={{display:"inline", fontFamily:"Poppins", marginBottom:"1rem", animation:"fadeIns 0.5s 0.25s", float:"left", textDecoration:"underline #22FF8A"}} className="animate">Shuffled Games</h3><FontAwesomeIcon icon={faRandom} className="" style={{color:"#22FF8A",fontSize:"30px",cursor:'pointer', float:'right'}} onClick={shuffleGames} /></Col></Row><Row>{shuffled.map(game => (
+                  <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover" key={game.name}>
+                    <Link to={{
+                  pathname: "/game/" + game.display_name,
+                }}>
+                    <img src={game.image} alt={game.name + " Box Art"} style={{borderRadius: "15px", width:"100%", height:"calc(100% - 30px)", animation: 'fadeIns 0.5s 0.25s'}} className="animate hover2" />
+                    <h6 style={{textAlign:"left", fontFamily:"Poppins", marginTop:"5px", marginBottom:"20px", animation: 'fadeIns 0.5s 0.25s'}} className="animate">{game.name}</h6>
+                    </Link>
+                  </Col>
 
-            </Row>
+              ))} </Row></div>}
+
             
-            </div> : <div><h2 style={{fontFamily:"Poppins"}}>Loading games...</h2><Spinner name="ball-pulse-sync" color="#22FF8A" /></div>}
+            </div> : <div className="App-header"><h2 style={{fontFamily:"Poppins"}}>Loading games...</h2><Spinner name="ball-pulse-sync" color="#22FF8A" /></div>}
 
           </Container>
 
-        </header>
+          <div className="footer" style={{padding:"20px 0px", marginTop:"40px", backgroundColor:"#121212"}}>
+
+            <Container>
+              <p style={{display:"inline", float:"left"}}> &copy; 2020 Shuffle.GG</p>
+              <div style={{float:"right"}}>
+              <a href="https://twitter.com/shufflegg" target="_blank"><FontAwesomeIcon icon={faTwitter} size="2x" style={{color:"#22FF8A",cursor:'pointer',marginRight:"15px", marginBottom:"1rem"}} /></a>
+              <a href="https://discord.gg/bXAHTSx" target="_blank"><FontAwesomeIcon icon={faDiscord} size="2x" style={{color:"#22FF8A",cursor:'pointer',marginBottom:"1rem"}} /></a>
+              </div>
+            </Container>
+
+          </div>
+
+          <Modal isOpen={modal} toggle={toggle} centered={true}>
+      <ModalHeader toggle={toggle} style={{fontFamily:"Poppins"}}>Shuffle Settings</ModalHeader>
+      <ModalBody>
+      <Form>
+      <FormGroup>
+        <Label for="exampleSelect">Stream Language</Label>
+        <Input type="select" name="select" defaultValue="en" id="exampleSelect" onChange={(e) => console.log(`${e.target.value}`)}>
+          <option value="en">English</option>
+          <option value="es">Spanish</option>
+          <option value="pt">Portuguese</option>
+          <option value="de">German</option>
+          <option value="ko">Korean</option>
+          <option value="ru">Russian</option>
+          <option value="fr">French</option>
+          <option value="it">Italian</option>
+          <option value="zh">Chinese</option>
+          <option value="ja">Japanese</option>
+        </Input>
+      </FormGroup>
+      <FormGroup>
+        <Label>Max Viewer Count</Label>
+        <RangeSlider value={value} size="lg" tooltip="on" onChange={changeEvent => setValue(changeEvent.target.value)} min={1} max={25} />
+    </FormGroup>
+      </Form>
+      </ModalBody>
+      <ModalFooter>
+        <Button style={{backgroundColor:"#22FF8A", color:"#121212", fontFamily:"Poppins", border:"none"}} onClick={toggle}>Save</Button>{' '}
+      </ModalFooter>
+    </Modal>
 
     </div>
+
+    
 
   );
 
