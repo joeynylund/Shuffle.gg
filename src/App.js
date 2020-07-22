@@ -22,7 +22,7 @@ import { Container, Row, Col, Collapse,
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import  RangeSlider  from 'react-bootstrap-range-slider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRandom, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faRedo, faCog } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faDiscord } from '@fortawesome/free-brands-svg-icons';
 import Spinner from 'react-spinkit';
 import ReactGA from 'react-ga';
@@ -325,7 +325,7 @@ function App() {
                   </Col>
 
               ))} </Row>
-              <Row><Col md="12"><h3 style={{display:"inline", fontFamily:"Poppins", marginBottom:"1rem", animation:"fadeIns 0.5s 0.25s", float:"left", textDecoration:"underline #22FF8A"}} className="animate">Shuffled Games</h3><FontAwesomeIcon icon={faRandom} className="" style={{color:"#22FF8A",fontSize:"30px",cursor:'pointer', float:'right'}} onClick={shuffleGames} /></Col></Row><Row>{shuffled.map(game => (
+              <Row><Col md="12"><h3 style={{display:"inline", fontFamily:"Poppins", marginBottom:"1rem", animation:"fadeIns 0.5s 0.25s", float:"left", textDecoration:"underline #22FF8A"}} className="animate">Shuffled Games</h3><FontAwesomeIcon icon={faRedo} className="animate" style={{color:"#22FF8A",fontSize:"30px",cursor:'pointer', float:'right', animation:"fadeIns 0.5s 0.5s"}} onClick={shuffleGames} /></Col></Row><Row>{shuffled.map(game => (
                   <Col xs={{ size: 8, offset: 2 }} sm={{ size: 4, offset: 0 }} md={{ size: 3, offset: 0 }} lg={{ size: 3, offset: 0 }} xl={{ size: 2, offset: 0 }} style={{marginBottom:"30px"}} className="hover" key={game.name}>
                     <Link to={{
                   pathname: "/game/" + game.display_name,
@@ -355,34 +355,34 @@ function App() {
           </div>
 
           <Modal isOpen={modal} toggle={toggle} centered={true}>
-      <ModalHeader toggle={toggle} style={{fontFamily:"Poppins"}}>Shuffle Settings</ModalHeader>
-      <ModalBody>
-      <Form>
-      <FormGroup>
-        <Label for="exampleSelect">Stream Language</Label>
-        <Input type="select" name="select" defaultValue="en" id="exampleSelect" onChange={(e) => console.log(`${e.target.value}`)}>
-          <option value="en">English</option>
-          <option value="es">Spanish</option>
-          <option value="pt">Portuguese</option>
-          <option value="de">German</option>
-          <option value="ko">Korean</option>
-          <option value="ru">Russian</option>
-          <option value="fr">French</option>
-          <option value="it">Italian</option>
-          <option value="zh">Chinese</option>
-          <option value="ja">Japanese</option>
-        </Input>
-      </FormGroup>
-      <FormGroup>
-        <Label>Max Viewer Count</Label>
-        <RangeSlider value={value} size="lg" tooltip="on" onChange={changeEvent => setValue(changeEvent.target.value)} min={1} max={25} />
-    </FormGroup>
-      </Form>
-      </ModalBody>
-      <ModalFooter>
-        <Button style={{backgroundColor:"#22FF8A", color:"#121212", fontFamily:"Poppins", border:"none"}} onClick={toggle}>Save</Button>{' '}
-      </ModalFooter>
-    </Modal>
+            <ModalHeader toggle={toggle} style={{fontFamily:"Poppins"}}>Shuffle Settings</ModalHeader>
+            <ModalBody>
+              <Form>
+                <FormGroup>
+                  <Label for="exampleSelect">Stream Language</Label>
+                  <Input type="select" name="select" defaultValue="en" id="exampleSelect" onChange={(e) => console.log(`${e.target.value}`)}>
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="de">German</option>
+                    <option value="ko">Korean</option>
+                    <option value="ru">Russian</option>
+                    <option value="fr">French</option>
+                    <option value="it">Italian</option>
+                    <option value="zh">Chinese</option>
+                    <option value="ja">Japanese</option>
+                  </Input>
+                </FormGroup>
+                <FormGroup>
+                  <Label>Max Viewer Count</Label>
+                  <RangeSlider value={value} size="lg" tooltip="on" onChange={changeEvent => setValue(changeEvent.target.value)} min={1} max={25} />
+                </FormGroup>
+              </Form>
+            </ModalBody>
+            <ModalFooter>
+              <Button style={{backgroundColor:"#22FF8A", color:"#121212", fontFamily:"Poppins", border:"none"}} onClick={toggle}>Save</Button>{' '}
+            </ModalFooter>
+          </Modal>
 
     </div>
 
